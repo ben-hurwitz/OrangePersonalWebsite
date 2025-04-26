@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: AbeatbyKai, abeatbyKai;
+        font-size: 12px;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #fff89e;
+      }
+    </style>
+  </defs>
+  <path class="cls-2" d="M16,32C7.18,32,0,24.82,0,16S7.18,0,16,0s16,7.18,16,16-7.18,16-16,16ZM16,.73C7.58.73.73,7.58.73,16s6.85,15.27,15.27,15.27,15.27-6.85,15.27-15.27S24.42.73,16,.73Z"/>
+  <g>
+    <text class="cls-1" transform="translate(5.37 19.78)"><tspan x="0" y="0">ben</tspan></text>
+    <rect class="cls-2" x="26.18" y="19.55" width=".93" height="7.75"/>
+    <rect class="cls-2" x="5.34" y="4.2" width=".93" height="6.1"/>
+  </g>
+</svg>
