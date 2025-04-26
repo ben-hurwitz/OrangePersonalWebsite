@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script>
+    function handleRedirect() {
+      const isMobile = window.innerHeight > 1.25 * window.innerWidth;
+    
+      const currentPage = window.location.pathname;
+    
+      if (isMobile && !currentPage.includes("mobile.html")) {
+        window.location.replace("mobile.html");
+      } else if (!isMobile && !currentPage.includes("index.html")) {
+        window.location.replace("index.html");
+      }
+    }
+    
+    // Check immediately when the page loads
+    handleRedirect();
+    
+    // Also keep checking whenever the user resizes the window
+    window.addEventListener('resize', handleRedirect);
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        /* preferably, of course, this is a <link> instead */
+        @font-face {
+          font-family: Futura;
+          src: local('Futura Std');
+        }
+        span {
+          font-family: Futura;
+        }
+
+        /* Style for the overlay */
+    #block-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0); /* Fully transparent */
+      z-index: 9999; /* Ensure it's above everything */
+      pointer-events: all; /* Block clicks */
+    }
+        
+      </style>
+    <link rel="stylesheet" href="https://use.typekit.net/guq0fud.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Linking Style Sheets-->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/marquee.css">
+    <link rel="stylesheet" href="mediaqueries.css">
+    <link rel="stylesheet" href="css/about.css">
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<!--Script Declarations-->
+
+<body>
+  <div class="stock-ticker2">
+    <ul>
+      <li class="minus">
+        <span class="company">puter Engineer</span>
+      </li>
+      <li class="minus">
+        <span class="company">•••</span>
+      </li>
+      <li class="plus">
+        <span class="company">Graphic Designer</span>
+      </li>
+      <li class="minus">
+        <span class="company">•••</span>
+      </li>
+      <li class="plus">
+        <span class="company">Computer Engineer</span>
+      </li>
+      <li class="minus">
+        <span class="company">•••</span>
+      </li>
+      <li class="plus">
+        <span class="company">Web Developer</span>
+      </li>
+      <li class="minus">
+        <span class="company">•••</span>
+      </li>
+      <li class="plus">
+        <span class="company">Computer Engineer</span>
+      </li>
+      <li class="minus">
+        <span class="company">•••</span>
+      </li>
+      <li class="minus">
+        <span class="company">Graphic Designer</span>
+      </li>
+      <li class="minus">
+        <span class="company">•••</span>
+      </li>
+      <li class="plus">
+        <span class="company">Web Developer</span>
+      </li>
+      <li class="minus">
+        <span class="company">•••</span>
+      </li>
+      <li class="plus">
+        <span class="company">Graphic Designer</span>
+      </li>
+      <li class="minus">
+        <span class="company">•••</span>
+      </li>
+      <li class="plus">
+        <span class="company">Com</span>
+      </li>
+    </ul>
+  
+    <ul aria-hidden="true">
+        <li class="minus">
+            <span class="company">puter Engineer</span>
+          </li>
+          <li class="minus">
+            <span class="company">•••</span>
+          </li>
+          <li class="plus">
+            <span class="company">Graphic Designer</span>
+          </li>
+          <li class="minus">
+            <span class="company">•••</span>
+          </li>
+          <li class="plus">
+            <span class="company">Web Developer</span>
+          </li>
+          <li class="minus">
+            <span class="company">•••</span>
+          </li>
+          <li class="plus">
+            <span class="company">Computer Engineer</span>
+          </li>
+          <li class="minus">
+            <span class="company">•••</span>
+          </li>
+          <li class="plus">
+            <span class="company">Graphic Designer</span>
+          </li>
+          <li class="minus">
+            <span class="company">•••</span>
+          </li>
+          <li class="minus">
+            <span class="company">Web Developer</span>
+          </li>
+          <li class="minus">
+            <span class="company">•••</span>
+          </li>
+          <li class="plus">
+            <span class="company">Graphic Designer</span>
+          </li>
+          <li class="minus">
+            <span class="company">•••</span>
+          </li>
+          <li class="plus">
+            <span class="company">Computer Engineer</span>
+          </li>
+          <li class="minus">
+            <span class="company">•••</span>
+          </li>
+          <li class="plus">
+            <span class="company">Com</span>
+          </li>
+    </ul>
+  </div>
+
+    <!-- Header-->
+    
+    
+    <header class="header-main">
+      <nav class="header-main-nav">
+        <div class="hamburger-menu" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <ul id="menu">
+          <div class = "contact_icons">
+            <div class = "insta"></div>
+            <div class = "linkedin"></div>
+            <div class = "github"></div>
+            <div class = "email_"></div>
+          </div>
+          <div class = "blog">
+            <li>
+              <a href="design.html">design</a>
+            </li>
+          </div>
+          <div class = "blog2">
+            <li>
+              <a href="#footer-main" onclick="toggleMenu(); scrollToSection(event, '#footer-main')">blog</a>
+            </li>
+          </div>
+          <div class = "about">
+            <li>
+              <a href="#footer-main" onclick="toggleMenu(); scrollToSection(event, '#footer-main')">me</a>
+            </li>
+          </div>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- benhurwitz.org icon-->
+
+    <main>
+      <div class = "imagearea">
+        <div class = "imagearea1"></div>
+        <div class = "imagearea2"></div>
+      </div>
+      <div class = "scrollinfo"></div>
+      
+      <h1>
+        <span class="textb">b</span>
+        <span class="texte">e</span>
+        <span class="textn">n</span>
+        <span class="texth">h</span>
+        <span class="textu">u</span>
+        <span class="textr">r</span>
+        <span class="textw">w</span>
+        <span class="texti">i</span>
+        <span class="textt">t</span>
+        <span class="textz">z</span>
+        <span class="first">graphic designer</span>
+        <span class="second">web designer</span>
+        <span class="third">graphic designer</span>
+        <span class="fourth">ben hurwitz</span>
+        <div class ="staricon"></div>
+        <div class ="benicon"></div>
+      </h1>
+
+    
+    <div class = "footerbox">
+      <div class = "footerleft">
+        <div class="para1">
+          hello! my name is <em class="hover-trigger" data-target="circle1">ben hurwitz</em>. I attend<br>
+          <em class="hover-trigger" data-target="circle2">UW Madison</em> where I study CS, DS,<br>
+          and graphic design.<br><br>I like biking, writing,
+          <em class="hover-trigger" data-target="circle3">music</em>, 
+          boba and poke.<br><br>
+          When not at class, you’ll find me 
+          <em class="hover-trigger" data-target="circle4">circuit tinkering</em>,<br>
+          <em class="hover-trigger" data-target="circle5">3D modeling</em>, 
+          <em class="hover-trigger" data-target="circle6">graphic designing</em>, 
+          <em class="hover-trigger" data-target="circle7">music producing</em>,<br> 
+          <em class="hover-trigger" data-target="circle8">keyboard typing</em>, 
+          <em class="hover-trigger" data-target="circle9">typography finding</em>, or 
+          <em class="hover-trigger" data-target="circle10">video making</em>. 
+        
+          <!-- circles are here inside .para1 -->
+          <div class="flash-circle" id="circle1"></div>
+          <div class="flash-circle" id="circle2"></div>
+          <div class="flash-circle" id="circle3"></div>
+          <div class="flash-circle" id="circle4"></div>
+          <div class="flash-circle" id="circle5"></div>
+          <div class="flash-circle" id="circle6"></div>
+          <div class="flash-circle" id="circle7"></div>
+          <div class="flash-circle" id="circle8"></div>
+        </div>
+        <div class ="botbuttons">
+          <div class = "readmore"></div>
+          <div class = "seemore"></div>
+          <div class = "viewmore"></div>
+        </div>
+      </div>
+      <div class = "footerright">Website coded and designed<br>by Ben Hurwitz.</div>
+    </div>
+    </main>
+  
+    <!--
+<footer class="footer-main" id="footer-main">
+  <div class="footleft">
+    <div class="fltop">
+      <h>explore</h>
+    </div>
+    <div class="flmid">
+      <div class="fmabout">
+        <a href="about.html" onclick="handleLinkClick(event, 'about.html')">about</a>
+      </div>
+      <div class="fmabout">
+        <a href="#portfolio" onclick="handleLinkClick(event, '#portfolio')">projects</a>
+      </div>
+      <div class="fmabout">
+        <a href="https://benhurwitz.notion.site/The-Blog-1345876d151280efa283f07e98cb3377?pvs=4" target="_blank" rel="noopener noreferrer">blog</a>
+      </div>      
+
+      <div class="fmabout">
+        <a href="about.html" onclick="handleLinkClick(event, 'about.html')">contact</a>
+      </div>
+    </div>
+    <div class="flbot">
+      <p>Website designed and <br> coded by Ben Hurwitz.</p>
+    </div>
+  </div>
+  <div class="footright">
+    <div class="footphoto"></div>
+  </div>
+
+
+</footer>
+
+-->
+
+<script>
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const para1 = document.querySelector('.para1');
+  const triggers = para1.querySelectorAll('.hover-trigger');
+  const circles = para1.querySelectorAll('.flash-circle');
+
+  function hideCircles() {
+    circles.forEach(circle => {
+      circle.style.display = 'none';
+    });
+  }
+
+  triggers.forEach(trigger => {
+    trigger.addEventListener('mouseenter', () => {
+      const targetId = trigger.getAttribute('data-target');
+      hideCircles();
+      const targetCircle = para1.querySelector(`#${targetId}`);
+      if (targetCircle) {
+        targetCircle.style.display = 'block';
+      }
+    });
+
+    trigger.addEventListener('mouseleave', () => {
+      hideCircles();
+    });
+  });
+});
+
+
+window.addEventListener('scroll', () => {
+  const icons = document.querySelector('.contact_icons');
+  const scrollTrigger = icons.offsetTop - 2 * window.innerWidth / 100; // 2vw in px
+
+  if (window.scrollY >= scrollTrigger) {
+    icons.classList.add('fixed-icons');
+  } else {
+    icons.classList.remove('fixed-icons');
+  }
+});
+
+
+// JavaScript to adjust opacity based on scroll
+let lastScrollY = 0;
+
+const adjustOpacity = () => {
+    const imageArea = document.querySelector('.imagearea2');
+    const viewportHeight = window.innerHeight;
+    const threshold = 0.4 * viewportHeight; // 10% of the viewport height
+
+    // Calculate new opacity based on scroll position
+    let newOpacity = 1 - Math.min(lastScrollY / threshold, 1);
+    newOpacity = Math.max(newOpacity, 0); // Ensure opacity doesn't go below 0
+
+    // Apply the new opacity to the element
+    imageArea.style.opacity = newOpacity;
+
+    // Request next frame if scroll is still happening
+    requestAnimationFrame(adjustOpacity);
+};
+
+// Update scroll position and trigger animation
+const onScroll = () => {
+    lastScrollY = window.scrollY;
+};
+
+// Add scroll event listener
+window.addEventListener('scroll', onScroll);
+
+// Start animation loop
+requestAnimationFrame(adjustOpacity);
+
+
+// Disable scrolling
+document.body.style.overflow = "hidden";
+
+// Re-enable scrolling and remove the overlay after 8 seconds
+setTimeout(() => {
+  document.body.style.overflow = ""; // Restore default scrolling
+  document.getElementById("block-overlay").remove(); // Remove the overlay
+}, 4000); // 8000ms = 8 seconds
+
+      document.addEventListener('scroll', () => {
+    const heroSection = document.querySelector('h1'); // Replace with hero section selector if different
+    const reversePoint = window.innerHeight * 0.01; // Adjust based on your layout
+    const addPoint = window.innerHeight * 30;
+
+    if (window.scrollY > reversePoint) {
+        heroSection.classList.add('reverse');
+    } else if(window.scrollY < addPoint) {
+        heroSection.classList.remove('reverse');
+    }
+});
+
+document.addEventListener('scroll', () => {
+    const header = document.querySelector('.header-main'); // Adjust selector if needed
+    const elementsToAnimate = document.querySelectorAll('.contact, .blog, .blog2, .about');
+    const scrollPoint = window.innerHeight * 0.01; // Adjust this as needed
+
+    if (window.scrollY > scrollPoint) {
+        header.classList.add('reverse');
+    } else {
+        header.classList.remove('reverse');
+    }
+});
+
+      // Function to check if the element is in the viewport
+      function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+          rect.top >= 0 &&
+          rect.left >= 0 &&
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+          rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+      }
+    
+      // Fade in when the element comes into the viewport
+      function checkFadeIn() {
+        const footphoto = document.querySelector('.footphoto');
+        if (isInViewport(footphoto)) {
+          footphoto.classList.add('fade-in');
+        }
+      }
+    
+      // Listen for scroll and trigger the fade-in check
+      window.addEventListener('scroll', checkFadeIn);
+      // Also check on page load in case the element is already in view
+      window.addEventListener('load', checkFadeIn);
+
+      // Smooth scroll function
+      function scrollToSection(event, sectionId) {
+        // Prevent the default anchor behavior
+        event.preventDefault();
+
+        // Get the target section element
+        const section = document.querySelector(sectionId);
+
+        // Scroll smoothly to the section
+        if (section) {
+          section.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }
+
+      function toggleMenu() {
+        const menu = document.getElementById("menu");
+        const hamburger = document.querySelector(".hamburger-menu");
+
+        // Toggle active class for showing menu
+        menu.classList.toggle("active");
+
+        // Toggle open class for the hamburger icon
+        hamburger.classList.toggle("open");
+      }
+
+      function handleLinkClick(event, target) {
+    event.preventDefault(); // Prevent immediate navigation
+
+    const screenWidth = window.innerWidth;
+
+    if (screenWidth < 800) {
+      // Apply 2-second delay only for screen widths below 800px
+      setTimeout(function() {
+        if (target.startsWith("#")) {
+          scrollToSection(event, target); // Scroll to section after delay
+        } else {
+          window.location.href = target; // Navigate to external page after delay
+        }
+      }, 1375); // 2-second delay
+    } else {
+      // No delay for larger screens
+      if (target.startsWith("#")) {
+        scrollToSection(event, target); // Immediate scroll for larger screens
+      } else {
+        window.location.href = target; // Immediate navigation for larger screens
+      }
+    }
+
+    
+  }
+    </script>
+</body>
+</html>

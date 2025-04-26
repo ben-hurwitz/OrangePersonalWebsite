@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        function handleRedirect() {
+          const isMobile = window.innerHeight > 1.25 * window.innerWidth;
+        
+          const currentPage = window.location.pathname;
+        
+          if (isMobile && !currentPage.includes("mobile.html")) {
+            window.location.replace("mobile.html");
+          } else if (!isMobile && !currentPage.includes("index.html")) {
+            window.location.replace("index.html");
+          }
+        }
+        
+        // Check immediately when the page loads
+        handleRedirect();
+        
+        // Also keep checking whenever the user resizes the window
+        window.addEventListener('resize', handleRedirect);
+        </script>
+        
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        /* preferably, of course, this is a <link> instead */
+        @font-face {
+          font-family: Futura;
+          src: local('Futura Std');
+        }
+        span {
+          font-family: Futura;
+        }
+
+        /* Style for the overlay */
+    #block-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0); /* Fully transparent */
+      z-index: 9999; /* Ensure it's above everything */
+      pointer-events: all; /* Block clicks */
+    }
+        
+      </style>
+    <link rel="stylesheet" href="https://use.typekit.net/guq0fud.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Linking Style Sheets-->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="mediaqueries.css">
+    <link rel="stylesheet" href="css/about.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
+
+</head>
+
+<!--Script Declarations-->
+
+<body>
+    
+    <main>
+    <div class ="viewwindow">
+      <div class ="firstpage" id="firstpage">
+        <div class = "innerbox">
+            <div class = "upperbox">
+                <div class = "upperleft"></div>
+                <div class = "upperright">
+                    <div class = "design">design</div>
+                    <div class = "blog">blog</div>
+                    <div class = "me">me</div>
+                </div>
+            </div>
+            <div class = "lowerbox">
+                <div class = "lowerleft"></div>
+                <div class = "lowerright">
+                    <div class = "mailicon"></div>
+                    <div class = "giticon"></div>
+                    <div class = "linkicon"></div>
+                    <div class = "instaicon"></div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class ="secondpage" id="secondpage">
+        <div class = "secondinner">
+            <div class = "upperbox2nd">
+                <div class = "upperleft2nd"></div>
+                <div class = "upperright"></div>
+            </div>
+            <div class = "lowerbox2nd">hello! my name is<br>
+                <em>ben hurwitz</em>. I attend<br>
+                UW Madison where I<br>
+                study CS, DS and<br>
+                graphic design.<br><br>I like biking, writing,<br>
+                music, boba and poke.<br><br>
+                When not at class,<br> 
+                you'll find me<br>
+                <em>circuit tinkering</em>,<br>
+                <em>3D modeling</em>,<br>
+                <em>graphic designing</em>,<br>
+                <em>music producing</em>,<br>
+                <em>keyboard typing</em>,<br>
+                <em>typography finding</em>,<br>
+                or <em>video making</em>.</div>
+        </div>
+      </div>
+    </div>
+    </main>
+  
+
+<script>
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const upperLeft = document.querySelector('.upperleft');
+  const secondPage = document.getElementById('secondpage');
+
+  upperLeft.addEventListener('click', () => {
+    secondPage.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const upperLeft = document.querySelector('.upperleft2nd');
+  const secondPage = document.getElementById('firstpage');
+
+  upperLeft.addEventListener('click', () => {
+    secondPage.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+    </script>
+</body>
+</html>
