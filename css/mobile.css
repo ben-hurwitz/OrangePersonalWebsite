@@ -1,0 +1,231 @@
+.viewwindow{
+    height: 200vh;
+}
+.firstpage {
+    height: 100vh;
+    width: 100vw;
+    background-image: url(../assets/picofmeorange.png);
+    background-position: 65% center; 
+    background-size: 275%;
+    background-repeat: no-repeat;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+
+.innerbox{
+    height: 95%;
+    width: 90%;
+    background-color: transparent;
+}
+
+.upperbox{
+    height: 40%;
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+}
+
+.upperleft {
+    height: 30%;
+    width: 30%;
+    background-image: url(../assets/ar1@2x.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: moveDown 1.25s ease-in-out infinite;
+}
+
+@keyframes moveDown {
+    0% { transform: translateY(0); }
+    16% { transform: translateY(1.5%); }
+    33% { transform: translateY(3%); }
+    50% { transform: translateY(4.5%); }
+    66% { transform: translateY(3%); }
+    83% { transform: translateY(1.5%); }
+    100% { transform: translateY(0); }
+  }
+
+.upperright{
+    height: 100%;
+    width: 70%;
+    background-color: transparent;
+}
+
+.design{
+    margin-top: 5vw;
+    font-family: Helvetica;
+    font-style: italic;
+    font-weight: 200;
+    color: #fff89e;
+    font-size: 18vw;
+    text-align: right;
+    text-decoration-line: underline;
+    text-decoration-thickness: .5vw;
+    margin-bottom: -2vw;
+}
+
+.blog{
+    font-family: Helvetica;
+    font-style: italic;
+    font-weight: 200;
+    color: #fff89e;
+    font-size: 18vw;
+    text-align: right;
+    text-decoration-line: underline;
+    text-decoration-thickness: .5vw;
+    margin-bottom: -2vw;
+}
+
+.me{
+    font-family: Helvetica;
+    font-style: italic;
+    font-weight: 200;
+    color: #fff89e;
+    font-size: 18vw;
+    text-align: right;
+    text-decoration-line: underline;
+    text-decoration-thickness: .5vw;
+}
+
+.lowerbox{
+    margin-top: 10%;
+    height: 60%;
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+}
+
+.lowerleft{
+    height: 100%;
+    width: 82%;
+    background-color: transparent;
+    background-image: url(../assets/bhp@2x.png);
+    background-position: left;
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: picChange 15s infinite;
+}
+
+@keyframes picChange {
+    0% { background-image: url(../assets/bhp@2x.png); }
+    49.9% { background-image: url(../assets/bhp@2x.png); }
+    50% { background-image: url(../assets/gdp@2x.png); }
+    59.9% { background-image: url(../assets/gdp@2x.png); }
+    60% { background-image: url(../assets/wdp@2x.png); }
+    69.9% { background-image: url(../assets/wdp@2x.png); }
+    70% { background-image: url(../assets/csp@2x.png); }
+    79.9% { background-image: url(../assets/csp@2x.png); }
+    80% { background-image: url(../assets/bhp@2x.png); }
+  }
+
+.lowerright{
+    position: fixed;
+    scale: .8;
+    left: 70%;
+    height: 60vh;
+    width: 18%;
+    margin-left: 10vw;
+}
+
+.mailicon{
+    margin-top: 30vw;
+    width: 100%;
+    height: 15%;
+    margin-bottom: 1vw;
+    scale: .8;
+    background-image: url(../assets/maillogo.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.giticon{
+    width: 100%;
+    height: 15%;
+    margin-bottom: 1vw;
+    scale: .8;
+    background-image: url(../assets/gitlogo.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.linkicon{
+    width: 100%;
+    height: 15%;
+    margin-bottom: 1vw;
+    scale: .8;
+    background-image: url(../assets/lilogo.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.instaicon{
+    width: 100%;
+    height: 15%;
+    scale: .8;
+    background-image: url(../assets/instalogo.png);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.secondpage{
+    height: 100vh;
+    width: 100%;
+    background-color: #fdfbef;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+
+.secondinner{
+    height: 95%;
+    width: 90%;
+    background-color: transparent
+}
+.upperbox2nd{
+    height: 10%;
+    width: 100%;
+    display: flex;
+}
+
+.upperleft2nd {
+    height: 100%;
+    width: 30%;
+    background-image: url(../assets/Asset\ 16@2x.png);
+    background-position: 20%;
+    background-size: 60% contain;
+    background-repeat: no-repeat;
+    animation: moveUp 1.25s ease-in-out infinite;
+}
+
+@keyframes moveUp {
+    0% { transform: translateY(0); }
+    16% { transform: translateY(-1.5%); }
+    33% { transform: translateY(-3%); }
+    50% { transform: translateY(-4.5%); }
+    66% { transform: translateY(-3%); }
+    83% { transform: translateY(-1.5%); }
+    100% { transform: translateY(0); }
+  }
+
+.lowerbox2nd{
+    margin-top: 5%;
+    height: 90%;
+    width: 100%;
+    background-color: transparent;
+    font-family: "argent-pixel-cf", sans-serif;
+    font-size: 7vw;
+    font-kerning:normal;
+    color: black;
+    font-style: normal;
+    line-height: 1.08;
+}
+
+.lowerbox2nd em{
+    color: #f15a2c;
+    font-style: italic;
+}

@@ -1,0 +1,234 @@
+
+/*.stock-ticker {
+  font-size: 20px;
+  padding-block: .5%;
+  border-block: 2.2px solid;
+  color: #fff89e;
+  overflow: hidden;
+  user-select: none;
+  background-color: transparent;
+  margin-top: -100vh;
+
+  --gap: 50px;
+  display: flex;
+  gap: var(--gap);
+  margin-left: -60px;
+}
+*/
+
+.stock-ticker2 {
+  margin-left: -8vw;
+  background: transparent;
+  z-index: 100000000;
+  font-size: 20px;
+  color: #fff89e;
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+  -webkit-animation: dropdown 3.5s ease-in-out;
+          animation: dropdown 3.5s ease-in-out;
+          animation-delay: 0s;
+}
+
+@keyframes dropdown {
+  0% {
+      margin-top: -10vh;
+
+  }
+  50% {
+    margin-top: -5vh;
+  }
+  100% {
+    margin-top: 0vh;
+  }
+}
+
+.stock-ticker3 {
+  margin-top: 92.8vh;
+  margin-left: -8vw;
+  font-size: 15px;
+  color: #fff89e;
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+}
+
+.stock-ticker2 ul {
+  padding-block: 1.1%;
+  border-block: 2.2px solid;
+  z-index: 1000;
+  list-style: none;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  
+  --gap: 50px;
+  
+  gap: var(--gap);
+  color: #fff89e;
+
+  animation: scroll 120s linear infinite;
+  animation-direction: reverse;
+}
+
+.stock-ticker3 ul {
+  padding-block: .3%;
+  border-block: 2.2px solid;
+  list-style: none;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  
+  --gap: 50px;
+  
+  gap: var(--gap);
+  color: #fff89e;
+
+  animation: scroll 120s linear infinite;
+  animation-direction: reverse;
+}
+
+
+.stock-ticker:hover ul {
+    transition: 300ms ease-in-out;
+  color:#fff89e;
+}
+
+.stock-ticker2:hover ul {
+  transition: 300ms ease-in-out;
+color:#fff89e;
+}
+
+.stock-ticker3:hover ul {
+  transition: 300ms ease-in-out;
+color:#fff89e;
+}
+
+@keyframes scroll {
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+.stock-ticker2 .company{
+  font-family: "Helvetica", serif;
+  font-weight: 350;
+  color:#fff89e;
+}
+
+.stock-ticker3 .company{
+  font-family: "Fraunces", serif;
+  font-weight: 350;
+  color:#fff89e;
+}
+
+.imagearea{
+  margin-top: -10vh;
+  z-index: -1;
+  width: 100%;
+  height: 110vh;
+  -webkit-animation: dropdown2 3.5s ease-in-out;
+        animation: dropdown2 3.5s ease-in-out;
+        animation-delay: 0s;
+}
+
+@keyframes dropdown2 {
+0% {
+    margin-top: 0vh;
+
+}
+50% {
+  margin-top: -5vh;
+}
+100% {
+  margin-top: -10vh;
+}
+}
+
+
+.imagearea2 {
+  width: 100%;
+  height: 110vh;
+  margin-top: -110vh;
+  background-image: url(../assets/finalpicofmeorange.png);
+  z-index: -102;
+  opacity: 1;
+  background-repeat: no-repeat;
+  background-size: 1500%;
+  background-position: center;
+  align-self: center;
+  overflow: hidden;
+  animation: kenburns 4.5s ease-in-out forwards;
+  transition: background-image 1s ease-in-out, opacity 1s ease-in-out;
+}
+
+
+.imagearea1{
+  width: 100%;
+  height: 110vh;
+  background-image: url(../assets/finalpicofmeorange.png);
+  z-index: -101;
+  background-repeat: no-repeat;
+  background-size: 1500%;
+  background-position: center;
+  align-self: center;
+  overflow: hidden;
+  animation: kenburns 4.5s ease-in-out forwards;
+  transition: background-image 1s ease-in-out, opacity 1s ease-in-out;
+}
+
+
+@keyframes fade-in {
+  from{opacity: 1;}
+  to{opacity: 0;}
+}
+
+
+
+
+@media screen and (min-width: 1250px) {
+  @keyframes kenburns {
+      0% {
+          animation-timing-function: none;
+          opacity: 0;
+      }
+      30% {
+          animation-timing-function: none;
+          opacity: 0;
+      }
+      80% {
+          background-size: 180%;
+          opacity: 1;
+          animation-timing-function: linear;
+      }
+      100% {
+          background-size: 180%;
+          background-position: center;
+          filter: blur(1px);
+          animation-timing-function: ease-out;
+      }
+  }
+}
+
+
+@media screen and (max-width: 1250px) {
+  @keyframes kenburns {
+      0% {
+          background-size: 50000%;
+          animation-timing-function: ease-in;
+
+      }
+      2% {
+          background-size: 50000%;
+          animation-timing-function: ease-in;
+      }
+      100% {
+          background-size: 300%;
+          background-position: center;
+          animation-timing-function: ease-out;
+      }
+  }
+  }
+  

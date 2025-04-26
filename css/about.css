@@ -1,0 +1,207 @@
+body:after{
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    z-index: -1;
+    content: url(../assets/ameduorange.png) url(../assets/amintorange.png) url(../assets/amphiorange.png) url(../assets/ingorange.png) url(../assets/linkinorange.png) url(../assets/githuborange.png) url(../assets/emailorange.png) url(../assets/bloglastbuttonorange.png);
+}
+
+
+.aboutline{
+    background-repeat: no-repeat;
+    margin-top: 11vw;
+    background-size: contain;
+    background-position: center;
+    background-color: transparent;
+    height: 20vw;
+    width: 85%;
+    margin-left: 7.5%;
+}
+
+.aboutline:nth-child(1){
+    background-image: url(../assets/about_.png);
+}
+
+/* SECOND LINE OF MAIN */
+.about2line{
+    background-color: transparent;
+    height: 35vw;
+    width: 85%;
+    margin-left: 7.5%;
+    display: flex;
+}
+
+.line2left{
+    background-color: transparent;
+    height: 100%;
+    width: 60%;
+    float: left;
+}
+
+.line2lefttop{
+    background-color: transparent;
+    height: 30%;
+    width: 100%;
+    font-family: Helvetica;
+    font-style: italic;
+    font-weight: 800;
+    color: #414042;
+    font-size: 4vw;
+    line-height: 11vw;
+    margin-left: .15vw; /*overhangs bc of italics*/
+}
+
+.line2leftbottom{
+    background-color: transparent;
+    height: 70%;
+    width: 100%;
+    display: flex;
+}
+
+.line2leftbottomleft{
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: transparent;
+    height: 50%;
+    margin-top: 5vw;
+    width: 50%;
+    transform: rotate(15deg);
+}
+
+.line2leftbottomleft:nth-child(1){
+    background-image: url(../assets/staricon.png);
+}
+
+.line2leftbottomright{
+    height: 80%;
+    width: 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: transparent;
+    margin-top: 1vw;
+    transform: rotate(-30deg);
+}
+
+.line2leftbottomright:nth-child(2){
+    background-image: url(../assets/staricon.png);
+}
+
+.line2right{
+    background-color: transparent;
+    height: 100%;
+    width: 40%;
+}
+
+.line2righttop{
+    height: 75%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: right;
+    background-color: transparent;
+    transform: rotate(-18deg);
+    margin-bottom: 2vw;
+}
+
+.line2righttop:nth-child(1){
+    background-image: url(../assets/staricon.png);
+}
+
+.line2rightbottom{
+    background-color: transparent;
+    height: 25%;
+    width: 100%;
+}
+
+.line2rightbottom h{
+    font-family: Helvetica;
+    font-style: italic;
+    font-weight: 800;
+    color: #414042;
+    font-size: 6vw;
+    line-height: 11vw;
+    float: right;
+    margin-right: .15vw; /*overhangs bc of italics*/
+}
+
+.main3line{
+    background-color: transparent;
+    height: 35vw;
+    width: 85%;
+    margin-left: 7.5%;
+    display: flex;
+}
+
+.main3lineleft{
+    background-color: transparent;
+    height: 100%;
+    width: 50%;
+}
+
+.main3lineright{
+    width: 50%;
+    height: 100%;
+    background-color: transparent;
+}
+
+.main3lineright p{
+    margin-top: 4vw;
+    font-family: Helvetica;
+    font-weight: 400;
+    color: #414042;
+    font-size: 2vw;
+    float: right;
+    text-align: right;
+    margin-left: 4vw;
+}
+
+.main3lineleft h{
+    font-family: Helvetica;
+    font-style: italic;
+    font-weight: 800;
+    color: #414042;
+    font-size: 6vw;
+    line-height: 11vw;
+    float: left;
+    margin-left: .15vw; /*overhangs bc of italics*/
+}
+
+.main3linelefttop{
+    background-color: transparent;
+    height: 30%;
+    width: 100%;
+}
+
+.main3lineleftbottom{
+    background-color: transparent;
+    height: 70%;
+    width: 100%;
+}
+
+.main3lineleftbottom p{
+    font-family: Helvetica;
+    font-weight: 400;
+    color: #414042;
+    font-size: 2vw;
+    float: left;
+    margin-right: 4vw;
+}
+
+.picturesection{
+    background-color: transparent;
+    height: 95vw;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin-left: 7.5%;
+    margin-top: -25vw;
+    transform: rotate(-45deg);
+}
+
+.picturesection:nth-child(4){
+    background-image: url(../assets/benlayingdown.png);
+}
