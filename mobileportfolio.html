@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <script>
+        function handleRedirect() {
+          const isMobile = window.innerHeight > 1.25 * window.innerWidth;
+        
+          const currentPage = window.location.pathname;
+        
+          if (isMobile && !(currentPage.includes("mobile.html") || currentPage.includes("mobileportfolio.html"))) {
+          window.location.replace("mobile.html");
+        } else if (!isMobile && !currentPage.includes("index.html")) {
+          window.location.replace("index.html");
+        }
+
+        }
+        
+        // Check immediately when the page loads
+        handleRedirect();
+        
+        // Also keep checking whenever the user resizes the window
+        window.addEventListener('resize', handleRedirect);
+        </script>
+        
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        /* preferably, of course, this is a <link> instead */
+        @font-face {
+          font-family: Futura;
+          src: local('Futura Std');
+        }
+        span {
+          font-family: Futura;
+        }
+
+        /* Style for the overlay */
+    #block-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0); /* Fully transparent */
+      z-index: 9999; /* Ensure it's above everything */
+      pointer-events: all; /* Block clicks */
+    }
+        
+      </style>
+    <link rel="stylesheet" href="https://use.typekit.net/guq0fud.css">
+    <link rel="stylesheet" href="https://use.typekit.net/guq0fud.css">
+    <link rel="stylesheet" href="https://use.typekit.net/guq0fud.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Linking Style Sheets-->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="mediaqueries.css">
+    <link rel="stylesheet" href="css/about.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobileportfolio.css">
+
+</head>
+
+<!--Script Declarations-->
+
+<body>
+    
+    <main>
+    <div class ="viewwindow">
+      <div class ="artbox1">
+        <div class ="artboxtop">
+          <div class ="artboxtopleft">
+            <div class ="toplefttop">2024</div>
+            <div class="topleftbottom">
+              <span class="rotated-text">Portfolio</span>
+            </div>            
+          </div>
+          <div class ="artboxtopmid"></div>
+        </div>
+        <div class ="artboxmid">
+          <div class ="midleft"></div>
+          <div class ="midmid">All American Made</div>
+          <div class ="midright"></div>
+        </div>
+        <div class ="artboxbot">
+          <div class ="botleft"></div>
+          <div class ="botmid"></div>
+          <div class ="botright"></div>
+        </div>
+      </div>
+      <div class ="artbox">
+        <div class ="artboxtop">
+          <div class ="artboxtopleft">
+            <div class ="toplefttop">2025</div>
+            <div class="topleftbottom">
+              <span class="rotated-text">Portfolio</span>
+            </div>            
+          </div>
+          <div class ="artboxtopmid1"></div>
+        </div>
+        <div class ="artboxmid">
+          <div class ="midleft"></div>
+          <div class ="midmid">Engineering EXPO</div>
+          <div class ="midright"></div>
+        </div>
+        <div class ="artboxbot">
+          <div class ="botleft"></div>
+          <div class ="botmid"></div>
+          <div class ="botright"></div>
+        </div>
+      </div>
+      <div class ="artbox">
+        <div class ="artboxtop">
+          <div class ="artboxtopleft">
+            <div class ="toplefttop">2025</div>
+            <div class="topleftbottom">
+              <span class="rotated-text">Portfolio</span>
+            </div>            
+          </div>
+          <div class ="artboxtopmid2"></div>
+        </div>
+        <div class ="artboxmid">
+          <div class ="midleft"></div>
+          <div class ="midmid">Teenage Quoting</div>
+          <div class ="midright"></div>
+        </div>
+        <div class ="artboxbot">
+          <div class ="botleft"></div>
+          <div class ="botmid"></div>
+          <div class ="botright"></div>
+        </div>
+      </div>
+    </div>
+    </main>
+  
+
+<script>
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+.viewwindow{
+    height: 200vh;
+    width: 100%;
+    background-color: #fdfbef;
+}
+
+.artbox1{
+    height: 80vw;
+    width: 100%;
+    background-color: transparent;
+    border-top: .4vw solid black;
+    border-bottom: .4vw solid black;
+}
+
+.artbox{
+    height: 80vw;
+    width: 100%;
+    background-color: transparent;
+    border-bottom: .4vw solid black;
+}
+
+.artboxtop{
+    display: flex;
+    height: 75%;
+    width: 100%;
+    background-color: transparent;
+    border-bottom: .4vw solid black;
+}
+
+.artboxtopleft{
+    height: 100%;
+    width: 18%;
+    background-color: transparent;
+    border-right: .4vw solid black;
+}
+
+.toplefttop{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Helvetica, sans-serif;
+    font-weight: 2;
+    font-size: 7vw;
+    color: #fdfbef;
+    height: 15%;
+    width: 100%;
+    background-color: black;
+    border-bottom: .4vw solid black;
+}
+
+.topleftbottom {
+    display: flex;
+    justify-content: flex-start; /* push text to the right */
+    align-items:flex-end; /* center vertically */
+    font-family: "helvetica";
+    font-weight: 100;
+    font-style: normal;
+    font-size: 7vw;
+    color: black;
+    width: 100%;
+    height: 85%;
+    background-color: transparent;
+    overflow: hidden; /* optional, to keep things clean */
+}
+
+.rotated-text {
+    font-family: "helvetica", sans-serif;
+    font-weight: 20;
+    font-style: normal;
+    font-size: 7vw;
+    color: black;
+    transform: rotate(270deg);
+    margin-left: 1vw;
+    margin-bottom: 11vw;
+    white-space: nowrap; /* keeps the text from wrapping after rotation */
+}
+
+.artboxtopmid{
+    width: 64%;
+    height: 100%;
+    background-color:transparent;
+    background-image: url(../assets/aapmtest.png);
+    background-position: center;
+    background-size: 140%;
+    background-repeat: no-repeat;
+    border-right: .4vw solid black;
+}
+
+.artboxtopmid1{
+    width: 64%;
+    height: 100%;
+    background-color:transparent;
+    background-image: url(../assets/eeport.png);
+    background-position: center;
+    background-size: 140%;
+    background-repeat: no-repeat;
+    border-right: .4vw solid black;
+}
+
+.artboxtopmid2{
+    width: 64%;
+    height: 100%;
+    background-color:transparent;
+    background-image: url(../assets/tqport.png);
+    background-position: center;
+    background-size: 140%;
+    background-repeat: no-repeat;
+    border-right: .4vw solid black;
+}
+
+.artboxmid{
+    display: flex;
+    height: 12.5%;
+    width: 100%;
+    background-color: transparent;
+}
+
+.midleft{
+    width: 18%;
+    height: 100%;
+    border-right: .4vw solid black;
+    border-bottom: .4vw solid black;
+}
+
+.midmid{
+    display: flex;
+    justify-content: center; /* center text horizontally */
+    align-items: center;
+    width: 64%;
+    height: 100%;
+    border-right: .4vw solid black;
+    border-bottom: .4vw solid black;
+    font-family: "helvetica", sans-serif;
+    font-weight: 20;
+    font-style: normal;
+    font-size: 7vw;
+    color: black;
+}
+
+.midright{
+    width: 18%;
+    height: 100%;
+    border-bottom: .4vw solid black;
+}
+
+.artboxbot{
+    display: flex;
+    height: 12.5%;
+    width: 100%;
+    background-color: transparent;
+}
+
+.botleft{
+    width: 18%;
+    height: 100%;
+    border-right: .4vw solid black;
+}
+
+.botmid{
+    width: 64%;
+    height: 100%;
+    border-right: .4vw solid black;
+}
+
+.botright{
+    width: 18%;
+    height: 100%;
+}

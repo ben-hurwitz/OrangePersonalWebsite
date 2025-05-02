@@ -2,15 +2,7 @@
 <html lang="en">
 
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XWGJYRPVGF"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-XWGJYRPVGF');
-</script>
+  <link rel="icon" href="../assets/favicon2.png" type="image/png">
   <script>
     function handleRedirect() {
       const isMobile = window.innerHeight > 1.25 * window.innerWidth;
@@ -33,7 +25,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+    <title>Ben Hurwitz</title>
     <style>
         /* preferably, of course, this is a <link> instead */
         @font-face {
@@ -209,12 +201,12 @@
           </div>
           <div class = "blog2">
             <li>
-              <a href="#footer-main" onclick="toggleMenu(); scrollToSection(event, '#footer-main')">blog</a>
+              <a href="blog.html">blog</a>
             </li>
           </div>
           <div class = "about">
             <li>
-              <a href="#footer-main" onclick="toggleMenu(); scrollToSection(event, '#footer-main')">me</a>
+              <a href="#footer-main" onclick="toggleMenu(); scrollToSection(event, '#footerbox')">me</a>
             </li>
           </div>
         </ul>
@@ -250,7 +242,7 @@
       </h1>
 
     
-    <div class = "footerbox">
+    <div class = "footerbox" id="footerbox">
       <div class = "footerleft">
         <div class="para1">
           hello! my name is <em class="hover-trigger" data-target="circle1">ben hurwitz</em>. I attend<br>
@@ -279,8 +271,9 @@
         </div>
         <div class ="botbuttons">
           <div class = "readmore"></div>
-          <div class = "seemore"></div>
-          <div class = "viewmore"></div>
+          <div class="seemore" >
+          </div>          
+          <div class = "viewmore" onclick="window.location.href='blog.html'"></div>
         </div>
       </div>
       <div class = "footerright">Website coded and designed<br>by Ben Hurwitz.</div>
