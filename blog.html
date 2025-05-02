@@ -1,0 +1,132 @@
+<!-- blog.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Blog by Ben</title>
+  <link rel="stylesheet" href="https://use.typekit.net/guq0fud.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <style>
+    body {
+    margin-left: 8vw;
+    margin-top: 8vw;
+      height: 100vh;
+      background: #fdfbd3;
+      font-family: Arial, sans-serif;
+    }
+
+    .title{
+        font-family: "argent-pixel-cf", sans-serif;
+        color: orangered;
+        font-size: 7vw;
+        padding-bottom: 3vw;
+    }
+
+    .subtitle {
+    font-family: Helvetica, sans-serif;
+    font-weight: 2;
+    color: orangered;
+    font-size: 1.2rem; /* base size for mobile */
+    max-width: 80%;
+    word-wrap: break-word;
+    padding-bottom: 3vw;
+}
+
+/* Increase font size on screens wider than 768px (tablet/desktop) */
+@media (min-width: 768px) {
+    .subtitle {
+        font-size: 1.8rem; /* or whatever larger size you want */
+    }
+}
+
+h2{
+    font-family: Helvetica, sans-serif;
+    color: orangered;
+    font-size: 2vw;   
+}
+
+#password {
+    width: 80%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 2px solid orangered;
+    border-radius: 8px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+    color: orangered;
+}
+
+#password:focus {
+    border-color: orangered;
+}
+
+    .container {
+      background: transparent;
+      text-align: left;
+    }
+    input[type="password"] {
+      padding: 0.5rem;
+      width: 80%;
+      margin: 1rem 0;
+      background-color: transparent;
+    }
+    button {
+    color: #fdfbd3;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      background-color: orangered;
+      border: 2px solid orangered;
+    border-radius: 8px;
+    }
+    .error {
+      color: red;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .insuc {
+      color: red;
+      margin-top: 0.5rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+    <div class ="title">the blog</div>
+    <div class ="subtitle">This blog is meant for friends, families, and close peers as it gives insight
+        into my personal life: the good, the bad and everything in between.<br><br>To access this blog, please enter the password below, or reach out to
+        ben@benhurwitz.org.</div>
+  <div class="container">
+    <h2>Enter password below to view blog</h2>
+    <input type="password" id="password" placeholder="Enter password">
+    <br>
+    <button onclick="checkPassword()">Submit</button>
+    <div id="error" class="error">Incorrect password. Please try again or contact ben@benhurwitz.org.</div>
+    <div id="insuc" class="insuc">You're in! Redirecting...</div>
+  </div>
+
+  <script>
+    function checkPassword() {
+      const input = document.getElementById('password').value;
+      const errorDiv = document.getElementById('error');
+      const inSuc = document.getElementById('insuc');
+
+      //YOU FOUND THE PASSWORD, CONGRATS!!!!!
+      const correctPassword = '2006';
+
+      if (input === correctPassword) {
+        errorDiv.style.display = 'none';
+        inSuc.style.display = 'block';
+        // Delay redirect by 1000 milliseconds (1 second)
+    setTimeout(function() {
+        window.location.href = 'https://benhurwitz.notion.site/The-Blog-1345876d151280efa283f07e98cb3377?pvs=4';
+    }, 3000);
+      } else {
+        errorDiv.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
