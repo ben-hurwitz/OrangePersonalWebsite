@@ -206,7 +206,6 @@ color:#fff89e;
       100% {
           background-size: 180%;
           background-position: center;
-          filter: blur(1px);
           animation-timing-function: ease-out;
       }
   }

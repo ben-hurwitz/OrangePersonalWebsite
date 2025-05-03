@@ -8,7 +8,7 @@ body:after{
 }
 
 body{
-  cursor: url(../assets/cursorpointer.png), auto;
+  cursor: url(../assets/cursor1.png), auto;
   background-color: #2a295e;
   -webkit-animation: topbarswitch infinite 20s none;
         animation: topbarswitch infinite 20s none;
@@ -36,12 +36,11 @@ body{
   100% { background-color:#2a295e;
 }
 }
-
 html{
   scroll-behavior: smooth;
 }
 a{
-  cursor: url(../assets/cursor.png), auto;
+  cursor: url(../assets/cursor2.png), auto;
 }
 
 

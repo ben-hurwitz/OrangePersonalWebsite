@@ -615,23 +615,39 @@ h1 {
   }
   
   @keyframes flashColors2 {
-    0%   { background-image: url(../assets/umad1@2x.png);
+    0%   { background-image: url(../assets/mad1\ Small.jpeg);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat; }
-    25%  { background-image: url(../assets/umad2@2x.png);
+        24.9%   { background-image: url(../assets/mad1\ Small.jpeg);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat; }
-    50%  { background-image: url(../assets/umad3@2x.png); 
+    25%  { background-image: url(../assets/mad2\ 2\ Small.jpeg);
+            background-size: cover;
+            background-position: 30%;
+            background-repeat: no-repeat; }
+            49.9%  { background-image: url(../assets/mad2\ 2\ Small.jpeg);
+                background-size: cover;
+                background-position: 30%;
+                background-repeat: no-repeat; }
+    50%  { background-image: url(../assets/mad3\ Small.jpeg); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;}
-    75%  { background-image: url(../assets/umad4@2x.png);
+            74.9%  { background-image: url(../assets/mad3\ Small.jpeg); 
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;}
+    75%  { background-image: url(../assets/mad4\ Small.jpg);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat; }
-    100% { background-image: url(../assets/umad1@2x.png); 
+            99.9%  { background-image: url(../assets/mad4\ Small.jpg);
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat; }
+    100% { background-image: url(../assets/mad1\ Small.jpeg); 
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;}
@@ -706,6 +722,7 @@ h1 {
 }
 
 .readmore:hover{
+    cursor: url(../assets/cursor2.png), auto;
     transition-duration: .2s;
     background-image: url(../assets/rdmoreblk@2x.png);
 }
@@ -721,6 +738,7 @@ h1 {
 }
 
 .seemore:hover{
+    cursor: url(../assets/cursor2.png), auto;
     transition-duration: .2s;
     background-image: url(../assets/seemoreblk@2x.png);
 }
@@ -736,6 +754,7 @@ h1 {
 }
 
 .viewmore:hover{
+    cursor: url(../assets/cursor2.png), auto;
     transition-duration: .2s;
     background-image: url(../assets/viewmoreblk@2x.png);
 }

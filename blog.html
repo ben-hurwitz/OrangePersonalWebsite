@@ -8,6 +8,21 @@
   <link rel="stylesheet" href="https://use.typekit.net/guq0fud.css">
   <link rel="icon" href="favicon.png" type="image/png">
   <style>
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.4s;
+}
+
+
     body {
     margin-left: 8vw;
     margin-top: 8vw;
@@ -95,38 +110,45 @@ h2{
 </head>
 <body>
     <div class ="title">the blog</div>
-    <div class ="subtitle">This blog is meant for friends, families, and close peers as it gives insight
-        into my personal life: the good, the bad and everything in between.<br><br>To access this blog, please enter the password below, or reach out to
+    <div class ="subtitle">This blog is meant for friends, family members, and close peers as it gives insight
+        into my personal life.<br><br>To access this blog, please enter the password below, or reach out to
         ben@benhurwitz.org.</div>
   <div class="container">
     <h2>Enter password below to view blog</h2>
     <input type="password" id="password" placeholder="Enter password">
     <br>
     <button onclick="checkPassword()">Submit</button>
+    <button onclick="window.location.href='index.html'">Go Home</button>
     <div id="error" class="error">Incorrect password. Please try again or contact ben@benhurwitz.org.</div>
     <div id="insuc" class="insuc">You're in! Redirecting...</div>
   </div>
 
   <script>
     function checkPassword() {
-      const input = document.getElementById('password').value;
-      const errorDiv = document.getElementById('error');
-      const inSuc = document.getElementById('insuc');
+  const input = document.getElementById('password').value;
+  const errorDiv = document.getElementById('error');
+  const inSuc = document.getElementById('insuc');
+  const passwordInput = document.getElementById('password');
 
-      //YOU FOUND THE PASSWORD, CONGRATS!!!!!
-      const correctPassword = '2006';
+  const correctPassword = '2006';
 
-      if (input === correctPassword) {
-        errorDiv.style.display = 'none';
-        inSuc.style.display = 'block';
-        // Delay redirect by 1000 milliseconds (1 second)
+  if (input === correctPassword) {
+    errorDiv.style.display = 'none';
+    inSuc.style.display = 'block';
     setTimeout(function() {
-        window.location.href = 'https://benhurwitz.notion.site/The-Blog-1345876d151280efa283f07e98cb3377?pvs=4';
+      window.location.href = 'https://benhurwitz.notion.site/The-Blog-1345876d151280efa283f07e98cb3377?pvs=4';
     }, 3000);
-      } else {
-        errorDiv.style.display = 'block';
-      }
-    }
+  } else {
+    inSuc.style.display = 'none';
+    errorDiv.style.display = 'block';
+    passwordInput.value = ''; // Clear input
+    passwordInput.classList.add('shake'); // Add shake animation
+    passwordInput.addEventListener('animationend', function handler() {
+      passwordInput.classList.remove('shake');
+      passwordInput.removeEventListener('animationend', handler);
+    });
+  }
+}
   </script>
 </body>
 </html>
