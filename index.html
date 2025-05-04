@@ -325,6 +325,16 @@
 
 <script>
 
+let isDrawing = false;
+
+document.addEventListener('mousedown', () => {
+  isDrawing = true;
+});
+
+document.addEventListener('mouseup', () => {
+  isDrawing = false;
+});
+
 document.addEventListener('mousemove', (e) => {
   const dot = document.createElement('div');
   dot.classList.add('trail-dot');
@@ -333,17 +343,21 @@ document.addEventListener('mousemove', (e) => {
 
   document.body.appendChild(dot);
 
-  // trigger fade + shrink
-  requestAnimationFrame(() => {
-    dot.style.opacity = '0';
-    dot.style.transform += ' scale(0.5)';
-  });
+  if (!isDrawing) {
+    // trigger fade + shrink
+    requestAnimationFrame(() => {
+      dot.style.opacity = '0';
+      dot.style.transform += ' scale(0.5)';
+    });
 
-  // remove dot after transition
-  setTimeout(() => {
-    dot.remove();
-  }, 1000); // match transition duration
+    // remove dot after transition
+    setTimeout(() => {
+      dot.remove();
+    }, 1000); // match transition duration
+  }
+  // else: if drawing, keep the dot visible permanently
 });
+
 
 
 
