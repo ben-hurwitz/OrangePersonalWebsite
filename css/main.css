@@ -4,17 +4,26 @@ body:after{
   height: 0;
   overflow: hidden;
   z-index: -1;
-  content: url(/assets/ameduorange.png) url(/assets/amintorange.png) url(/assets/amphiorange.png);
+  content: url(../assets/imagearea1.png) url(../assets/imagearea2.png) url(../assets/imagearea3.png) url(../assets/imagearea4.png) url(../assets/imagearea5.png) url(../assets/rdmoreblk@2x.png) url(../assets/seemoreblk@2x.png) url(../assets/viewmoreblk@2x.png) url(../assets/Asset\ 14@0.5x.png) url(../assets/Asset\ 15@0.5x.png) url(../assets/Asset\ 16@0.5x.png) url(../assets/Asset\ 17@0.5x.png);
 }
 
 body{
   cursor: url(../assets/cursor1.png), auto;
-  background-color: #2a295e;
-  -webkit-animation: topbarswitch infinite 20s none;
-        animation: topbarswitch infinite 20s none;
-        -webkit-animation: topbarswitch infinite 20s none;
-        animation-delay: 8s;
+  background-color: #fffdea;
 }
+
+.trail-dot {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background-image: url(../assets/cursor1.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none; /* so it doesn’t interfere with clicks */
+  transform: translate(-50%, -50%); /* center the dot */
+  transition: opacity .5s linear, transform .5s linear;
+}
+
 
 @font-face {
   font-family: 'Serial B';
@@ -26,16 +35,6 @@ body{
   font-style: normal;
 }
 
-@keyframes topbarswitch {
-  0% { background-color :#2a295e;
-  }
-  33% { background-color:#2a295e;
-  }
-  66% { background-color:#2a295e;
-  }
-  100% { background-color:#2a295e;
-}
-}
 html{
   scroll-behavior: smooth;
 }

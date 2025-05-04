@@ -7,6 +7,26 @@ body:after{
     content: url(../assets/ameduorange.png) url(../assets/amintorange.png) url(../assets/amphiorange.png) url(../assets/ingorange.png) url(../assets/linkinorange.png) url(../assets/githuborange.png) url(../assets/emailorange.png) url(../assets/bloglastbuttonorange.png);
 }
 
+body{
+    cursor: url(../assets/cursor1.png), auto;
+    background-color: #fffdea;
+    -webkit-animation: topbarswitch 5s none;
+          animation: topbarswitch 5s none;
+          -webkit-animation: topbarswitch 5s none;
+          animation-delay: 0s;
+  }
+
+  @keyframes topbarswitch {
+    0% { background-color :#2a295e;
+    }
+    33% { background-color:#2a295e;
+    }
+    66% { background-color:#2a295e;
+    }
+    100% { background-color: #fffdea;
+  }
+  }
+
 @font-face {
     font-family: 'Serial B';
     src: local('Serial B Regular Blur'), local('Serial-B-Regular-Blur'),
@@ -496,13 +516,13 @@ h1 {
 
 @keyframes colorchange{
     0%{
-        background-color: #2a295e;
+        background-color:gray;
     }
     99%{
         background-color: #2a295e;
     }
     100%{
-        background-color: #414142;
+        background-color: gray;
     }
 }
 

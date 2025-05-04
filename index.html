@@ -25,8 +25,16 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ben Hurwitz</title>
+    <title>Home - Ben Hurwitz</title>
     <style>
+      body:after{
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  z-index: -1;
+  content: url(../assets/imagearea1.png) url(../assets/imagearea2.png) url(../assets/imagearea3.png) url(../assets/imagearea4.png) url(../assets/imagearea5.png) url(../assets/rdmoreblk@2x.png) url(../assets/seemoreblk@2x.png) url(../assets/viewmoreblk@2x.png) url(../assets/Asset\ 14@0.5x.png) url(../assets/Asset\ 15@0.5x.png) url(../assets/Asset\ 16@0.5x.png) url(../assets/Asset\ 17@0.5x.png);
+}
         /* preferably, of course, this is a <link> instead */
         @font-face {
           font-family: Futura;
@@ -316,6 +324,27 @@
 -->
 
 <script>
+
+document.addEventListener('mousemove', (e) => {
+  const dot = document.createElement('div');
+  dot.classList.add('trail-dot');
+  dot.style.left = `${e.pageX}px`;
+  dot.style.top = `${e.pageY}px`;
+
+  document.body.appendChild(dot);
+
+  // trigger fade + shrink
+  requestAnimationFrame(() => {
+    dot.style.opacity = '0';
+    dot.style.transform += ' scale(0.5)';
+  });
+
+  // remove dot after transition
+  setTimeout(() => {
+    dot.remove();
+  }, 1000); // match transition duration
+});
+
 
 
 document.addEventListener('DOMContentLoaded', () => {

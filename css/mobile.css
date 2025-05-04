@@ -29,6 +29,7 @@
 .upperleft {
     height: 30%;
     width: 30%;
+    margin-top: 5%;
     background-image: url(../assets/ar1@2x.png);
     background-position: center;
     background-size: contain;
@@ -89,7 +90,7 @@
 }
 
 .lowerbox{
-    margin-top: 10%;
+    margin-top: -10%;
     height: 60%;
     width: 100%;
     background-color: transparent;
@@ -193,13 +194,14 @@
 }
 
 .upperleft2nd {
-    height: 100%;
-    width: 30%;
+    height: 55%;
+    width: 55%;
     background-image: url(../assets/Asset\ 16@2x.png);
-    background-position: 20%;
-    background-size: 60% contain;
+    background-position: 25%;
+    background-size: contain;
     background-repeat: no-repeat;
     animation: moveUp 1.25s ease-in-out infinite;
+    opacity: 0;
 }
 
 @keyframes moveUp {
@@ -211,12 +213,25 @@
     83% { transform: translateY(-1.5%); }
     100% { transform: translateY(0); }
   }
-
+  @media screen and (max-width: 100px){
+    .lowerbox2nd{
+        margin-top: -5%;
+        height: 90%;
+        width: 100%;
+        background-color:transparent;
+        font-family: "argent-pixel-cf", sans-serif;
+        font-size: 2vw;
+        font-kerning:normal;
+        color: black;
+        font-style: normal;
+        line-height: 1.08;
+    }
+  }
 .lowerbox2nd{
-    margin-top: 5%;
+    margin-top: -5%;
     height: 90%;
     width: 100%;
-    background-color: transparent;
+    background-color:transparent;
     font-family: "argent-pixel-cf", sans-serif;
     font-size: 7vw;
     font-kerning:normal;
