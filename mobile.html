@@ -59,6 +59,7 @@
     <link rel="stylesheet" href="css/about.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/main.css">
 
 </head>
 
@@ -74,17 +75,17 @@
                 <div class = "upperleft"></div>
                 <div class = "upperright">
                     <div class = "design"><a href="mobileportfolio.html">design</a></div>
-                    <div class = "blog">blog</div>
-                    <div class = "me">me</div>
+                    <div class = "blog"><a href="blog.html">blog</a></div>
+                    <div class = "me"><a href="#secondpage" onclick="toggleMenu(); scrollToSection(event, '#footerbox')">me</a></div>
                 </div>
             </div>
             <div class = "lowerbox">
                 <div class = "lowerleft"></div>
                 <div class = "lowerright">
-                    <div class = "mailicon"></div>
-                    <div class = "giticon"></div>
-                    <div class = "linkicon"></div>
-                    <div class = "instaicon"></div>
+                  <a href="mailto:ben@benhurwitz.org?body=Thanks%20for%20reaching%20out!%20You%20can%20expect%20a%20response%20within%202%20days.%20Please%20start%20your%20message%20below." class="mailicon"></a> 
+                    <a href="https://github.com/ben-hurwitz" target="_blank" class="giticon"></a>
+                    <a href="https://www.linkedin.com/in/benjamin-hurwitz-523537238/" target="_blank" class="linkicon"></a>
+                    <a href="https://instagram.com/ben.hurwitz" class="instaicon"></a>
                 </div>
             </div>
         </div>
@@ -117,6 +118,61 @@
 
 <script>
 
+const instaIcon = document.querySelector('.instaicon');
+
+  instaIcon.addEventListener('click', function(event) {
+    event.preventDefault(); // stop immediate navigation
+
+    // change background image
+    instaIcon.style.backgroundImage = "url('../assets/Asset\ 14@0.5x.png')";
+
+    // wait 1 second, then navigate
+    setTimeout(function() {
+      window.location.href = instaIcon.href;
+    }, 200);
+  });
+
+  const LinkIcon = document.querySelector('.linkicon');
+
+  LinkIcon.addEventListener('click', function(event) {
+    event.preventDefault(); // stop immediate navigation
+
+    // change background image
+    LinkIcon.style.backgroundImage = "url('../assets/Asset\ 15@0.5x.png')";
+
+    // wait 1 second, then navigate
+    setTimeout(function() {
+      window.location.href = LinkIcon.href;
+    }, 200);
+  });
+
+  const GitIcon = document.querySelector('.giticon');
+
+  GitIcon.addEventListener('click', function(event) {
+    event.preventDefault(); // stop immediate navigation
+
+    // change background image
+    GitIcon.style.backgroundImage = "url('../assets/Asset\ 16@0.5x.png')";
+
+    // wait 1 second, then navigate
+    setTimeout(function() {
+      window.location.href = GitIcon.href;
+    }, 200);
+  });
+
+  const MailIcon = document.querySelector('.mailicon');
+
+  MailIcon.addEventListener('click', function(event) {
+    event.preventDefault(); // stop immediate navigation
+
+    // change background image
+    MailIcon.style.backgroundImage = "url('../assets/Asset\ 17@0.5x.png')";
+
+    // wait 1 second, then navigate
+    setTimeout(function() {
+      window.location.href = MailIcon.href;
+    }, 200);
+  });
 
 document.addEventListener('DOMContentLoaded', () => {
   const upperLeft = document.querySelector('.upperleft');
