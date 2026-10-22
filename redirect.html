@@ -7,24 +7,27 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300..900&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300..900&display=swap"
+    rel="stylesheet"
+  />
 
   <style>
-    /* ============ SETTINGS — tweak these ============ */
     :root {
       --page-bg: #ffffff;
       --text: #111111;
-      --rule: #F5F5F5;                /* divider lines */
-      --tile-bg: #F5F5F5;             /* project card title bar */
-
-      --name-color: #F5F5F5;          /* light gray footer name */
-      --reveal-opacity: 0.85;         /* how strongly the trees show (0–1) */
-      --rise-duration: 0.9s;          /* intro animation length per letter */
-      --rise-stagger: 45ms;           /* delay between letters */
+      --rule: #f5f5f5;
+      --name-color: #f5f5f5;
+      --reveal-opacity: 0.85;
+      --rise-duration: 0.9s;
+      --rise-stagger: 45ms;
     }
 
-    /* ============ BASE ============ */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       background: var(--page-bg);
@@ -34,160 +37,75 @@
       -webkit-text-size-adjust: 100%;
     }
 
-    a { color: inherit; }
-
-    /* Content column: fluid side padding, capped width on big screens */
     .container {
       margin: 0 auto;
-      padding: clamp(28px, 6vw, 64px) clamp(18px, 5vw, 48px) clamp(24px, 4vw, 40px);
+      padding:
+        clamp(28px, 6vw, 64px)
+        clamp(18px, 5vw, 48px)
+        clamp(24px, 4vw, 40px);
     }
-
-    /* ============ HEADER ============ */
-    .site-header {
-      display: flex;
-      flex-wrap: wrap;               /* nav drops below the name on very small screens */
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 8px 16px;
-    }
-
-    .brand {
-      text-decoration: none;
-      white-space: nowrap;
-      color: #000;
-    font-family: "Helvetica Neue";
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: normal;
-    }
-    .brand strong { font-weight: 500; margin-right: 6px; }
-
-    .nav { display: flex; gap: 18px; }
-    .nav a {
-      text-decoration: none;
-      color: #000;
-        font-family: "Helvetica Neue";
-        font-size: 22px;
-        font-style: normal;
-        font-weight: 300;
-        line-height: normal;
-    }
-    .nav a:hover { text-decoration: underline;}
-
-    .intro {
-      margin-top: 22px;
-      line-height: 1.5;
-      /*max-width: 70ch;*/
-      color: #000;
-        font-family: "Helvetica Neue";
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 250;
-        line-height: normal;
-    }
-    .intro a { text-underline-offset: 2px; }
 
     .rule {
       border: 0;
       border-top: 1.5px solid var(--rule);
-      margin: 22px 0 32px;
     }
 
-    /* ============ PROJECTS ============ */
-    .section + .section { margin-top: 36px; }
-
-    .section-title {
-      color: #000;
-font-family: "Helvetica Neue";
-font-size: 18px;
-font-style: normal;
-font-weight: 300;
-line-height: normal;
-      margin-bottom: 16px;
+    .footer-rule {
+      margin:
+        clamp(36px, 6vw, 52px) 0
+        clamp(12px, 2vw, 20px);
     }
-
-    /* 3 columns on desktop → 2 on tablets → 1 on phones, automatically.
-       auto-fill keeps "Current Projects" cards the same width as the row above. */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(350px, 100%), 1fr));
-      gap: clamp(18px, 3.5vw, 38px);
-    }
-
-    .project {
-      display: block;
-      text-decoration: none;
-      background: var(--tile-bg);
-      border-radius: 5px;
-      overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .project:hover {
-      transform: translateY(-2px);
-    }
-
-    .project-title {
-      padding: 0px 13px 0px;
-      color: #000;
-font-family: "Helvetica Neue";
-font-size: 15px;
-font-style: normal;
-font-weight: 300;
-line-height: 50px;
-height: 50px;
-    }
-
-    .project img {
-      display: block;
-      width: 100%;
-      aspect-ratio: 250 / 90;
-      object-fit: cover;
-    }
-
-    /* ============ FOOTER ============ */
-    .footer-rule { margin: clamp(36px, 6vw, 52px) 0 clamp(12px, 2vw, 20px); }
 
     .footer-name {
       line-height: 1;
-      overflow: hidden;           /* nothing spills sideways while it's being sized */
+      overflow: hidden;
     }
 
-    /* ============ NAME (footer) ============ */
     .name {
-      position: relative;
-      display: inline-block;
-      white-space: nowrap;
-      font-family: "Darker Grotesque", system-ui, sans-serif;
-      font-size: 200px;           /* JS resizes this to fill the container width */
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      cursor: default;
-      user-select: none;
+    position: relative;
+    display: block;
+    width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-family: "Darker Grotesque", system-ui, sans-serif;
+    font-size: 150px; /* Same size regardless of text length */
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    cursor: default;
+    user-select: none;
     }
 
-    .layer { display: block; }
+    .layer {
+      display: block;
+    }
 
-    /* Inner glow on the gray text (filter defined in the <svg> at the top of <body>) */
-    .layer--base { filter: url(#inner-glow); }
+    .layer--base {
+      filter: url(#inner-glow);
+    }
 
-    /* Gray text everyone sees */
-    .layer--base .char { color: var(--name-color); }
+    .layer--base .char {
+      color: var(--name-color);
+    }
 
-    /* Identical copy on top, filled with the photo and masked to a soft circle */
     .layer--reveal {
       position: absolute;
       inset: 0;
       pointer-events: none;
       opacity: var(--reveal-opacity);
+
       -webkit-mask-image: radial-gradient(
         circle var(--r, 0px) at var(--x, 50%) var(--y, 50%),
-        #000 0%, rgba(0, 0, 0, 0.2) 40%, transparent 100%
+        #000 0%,
+        rgba(0, 0, 0, 0.2) 40%,
+        transparent 100%
       );
-              mask-image: radial-gradient(
+
+      mask-image: radial-gradient(
         circle var(--r, 0px) at var(--x, 50%) var(--y, 50%),
-        #000 0%, rgba(0, 0, 0, 0.2) 40%, transparent 100%
+        #000 0%,
+        rgba(0, 0, 0, 0.2) 40%,
+        transparent 100%
       );
     }
 
@@ -195,46 +113,101 @@ height: 50px;
       color: transparent;
       background-repeat: no-repeat;
       -webkit-background-clip: text;
-              background-clip: text;
+      background-clip: text;
     }
 
-    /* ============ RISE-UP INTRO (plays when the footer scrolls into view) ============ */
     .word {
       display: inline-block;
-      overflow: hidden;          /* hides letters until they rise into view */
+      overflow: hidden;
       vertical-align: top;
-      padding: 0.1em 0 0.15em;   /* room so tall letters (B, H, t) aren't clipped */
+      padding: 0.1em 0 0.15em;
       margin: -0.1em 0 -0.15em;
+      max-width: 100%;
     }
 
     .char {
       display: inline-block;
       transform: translateY(110%);
-      animation: rise var(--rise-duration) cubic-bezier(0.2, 0.7, 0.1, 1) forwards paused;
+      animation:
+        rise var(--rise-duration)
+        cubic-bezier(0.2, 0.7, 0.1, 1)
+        forwards paused;
       animation-delay: calc(var(--i) * var(--rise-stagger) + 150ms);
     }
 
-    .name.is-in-view .char { animation-play-state: running; }
+    .name.is-in-view .char {
+      animation-play-state: running;
+    }
 
     @keyframes rise {
-      to { transform: translateY(0); }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    /* Discreet edit button */
+    .edit-text-button {
+      position: fixed;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      left: max(12px, env(safe-area-inset-left));
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      padding: 8px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: #777;
+      opacity: 0.3;
+      cursor: pointer;
+      transition: opacity 0.2s ease, background 0.2s ease;
+    }
+
+    .edit-text-button:hover,
+    .edit-text-button:focus-visible {
+      opacity: 1;
+      background: #f5f5f5;
+    }
+
+    .edit-text-button:focus-visible {
+      outline: 2px solid #777;
+      outline-offset: 2px;
+    }
+
+    .edit-text-button svg {
+      width: 14px;
+      height: 14px;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .char { animation: none; transform: none; }
+      .char {
+        animation: none;
+        transform: none;
+      }
     }
-
   </style>
 </head>
-<body>
 
-  <!-- Inner glow filter: inner shadow of 0 1px 4px rgba(0,0,0,0.05).
-       Raise flood-opacity / stdDeviation if it's too subtle. -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<body>
+  <svg
+    width="0"
+    height="0"
+    style="position: absolute"
+    aria-hidden="true"
+  >
     <filter id="inner-glow" x="-5%" y="-5%" width="110%" height="110%">
       <feOffset in="SourceAlpha" dy="1" result="offset" />
       <feGaussianBlur in="offset" stdDeviation="2" result="blur" />
-      <feComposite in="blur" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="inner" />
+      <feComposite
+        in="blur"
+        in2="SourceAlpha"
+        operator="arithmetic"
+        k2="-1"
+        k3="1"
+        result="inner"
+      />
       <feFlood flood-color="#000" flood-opacity="0.05" />
       <feComposite in2="inner" operator="in" result="shadow" />
       <feMerge>
@@ -245,145 +218,254 @@ height: 50px;
   </svg>
 
   <div class="container">
+    <footer>
+      <hr class="rule footer-rule" />
 
-      <!-- ===== FOOTER ===== -->
-      <footer>
-        <hr class="rule footer-rule" />
-        <div class="footer-name">
-          <div class="name" aria-hidden="true"
-               data-text="Design is an attitude."
-               data-image="assets/photo-1501854140801-50d01698950b.png">
-            <span class="layer layer--base"></span>
-            <span class="layer layer--reveal"></span>
-          </div>
+      <div class="footer-name">
+        <div
+          class="name"
+          aria-hidden="true"
+          data-text="Design is an attitude."
+          data-image="assets/photo-1501854140801-50d01698950b.png"
+        >
+          <span class="layer layer--base"></span>
+          <span class="layer layer--reveal"></span>
         </div>
-      </footer>
-
+      </div>
+    </footer>
   </div>
 
+  <button
+    class="edit-text-button"
+    id="edit-text-button"
+    type="button"
+    aria-label="Edit display text"
+    title="Edit display text"
+  >
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m16 3 5 5-12 12-6 1 1-6Z" />
+      <path d="m14 5 5 5" />
+    </svg>
+  </button>
+
   <script>
-    const nameEl   = document.querySelector('.name');
-    const boxEl    = document.querySelector('.footer-name');
-    const baseEl   = nameEl.querySelector('.layer--base');
-    const revealEl = nameEl.querySelector('.layer--reveal');
-    const text     = nameEl.dataset.text;
+    const nameEl = document.querySelector(".name");
+    const boxEl = document.querySelector(".footer-name");
+    const baseEl = nameEl.querySelector(".layer--base");
+    const revealEl = nameEl.querySelector(".layer--reveal");
+    const editButton = document.getElementById("edit-text-button");
+
+    const storageKey = "ben-portfolio:footer-text";
     const imageUrl = nameEl.dataset.image;
 
-    /* ---- 1. Split the name into words and letters (same markup in both layers) ---- */
+    let text = nameEl.dataset.text;
+
+    // Restore the last saved text before building the letters.
+    try {
+      const savedText = localStorage.getItem(storageKey);
+
+      if (savedText !== null && savedText.trim()) {
+        text = savedText;
+      }
+    } catch {
+      // Use the default text if browser storage is unavailable.
+    }
+
+    nameEl.dataset.text = text;
+
+    // Build identical text in both layers.
     function buildLayer(layer) {
+      layer.replaceChildren();
+
       let i = 0;
-      text.split(' ').forEach((word, w) => {
-        if (w > 0) layer.appendChild(document.createTextNode(' '));
-        const wordSpan = document.createElement('span');
-        wordSpan.className = 'word';
+
+      text.split(" ").forEach((word, wordIndex) => {
+        if (wordIndex > 0) {
+          layer.appendChild(document.createTextNode(" "));
+        }
+
+        const wordSpan = document.createElement("span");
+        wordSpan.className = "word";
+
         [...word].forEach(letter => {
-          const c = document.createElement('span');
-          c.className = 'char';
-          c.textContent = letter;
-          c.style.setProperty('--i', i++);
-          wordSpan.appendChild(c);
+          const char = document.createElement("span");
+          char.className = "char";
+          char.textContent = letter;
+          char.style.setProperty("--i", i++);
+
+          wordSpan.appendChild(char);
         });
+
         layer.appendChild(wordSpan);
       });
     }
+
     buildLayer(baseEl);
     buildLayer(revealEl);
 
-    /* ---- 2. Scale the name so it spans the full content width ---- */
-    function fitName() {
-      const target = boxEl.clientWidth - 2;   // tiny margin so the last letter is never clipped
-      nameEl.style.fontSize = '100px';
-      const natural = nameEl.offsetWidth;
-      if (natural) nameEl.style.fontSize = `${(100 * target) / natural}px`;
-      sizeImage();
-    }
-
-    /* ---- 3. Give each letter its slice of ONE continuous photo ---- */
     const img = new Image();
+    img.onload = sizeImage;
     img.src = imageUrl;
 
+    // Scale the text to the available width.
+    function fitName() {
+    sizeImage();
+    }
+
+    // Give each letter a slice of one continuous image.
     function sizeImage() {
       if (!img.naturalWidth) return;
-      const w = revealEl.offsetWidth;
-      const h = revealEl.offsetHeight;
-      const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
-      const iw = img.naturalWidth * scale;
-      const ih = img.naturalHeight * scale;
-      const ox = (w - iw) / 2;
-      const oy = (h - ih) / 2;
 
-      revealEl.querySelectorAll('.char').forEach(c => {
-        let x = 0, y = 0, el = c;
-        while (el && el !== revealEl) {   // position relative to the reveal layer
-          x += el.offsetLeft;
-          y += el.offsetTop;
-          el = el.offsetParent;
+      const width = revealEl.offsetWidth;
+      const height = revealEl.offsetHeight;
+
+      const scale = Math.max(
+        width / img.naturalWidth,
+        height / img.naturalHeight
+      );
+
+      const imageWidth = img.naturalWidth * scale;
+      const imageHeight = img.naturalHeight * scale;
+      const offsetX = (width - imageWidth) / 2;
+      const offsetY = (height - imageHeight) / 2;
+
+      revealEl.querySelectorAll(".char").forEach(char => {
+        let x = 0;
+        let y = 0;
+        let element = char;
+
+        while (element && element !== revealEl) {
+          x += element.offsetLeft;
+          y += element.offsetTop;
+          element = element.offsetParent;
         }
-        c.style.backgroundImage    = `url("${imageUrl}")`;
-        c.style.backgroundSize     = `${iw}px ${ih}px`;
-        c.style.backgroundPosition = `${ox - x}px ${oy - y}px`;
+
+        char.style.backgroundImage = `url("${imageUrl}")`;
+        char.style.backgroundSize = `${imageWidth}px ${imageHeight}px`;
+        char.style.backgroundPosition = `${offsetX - x}px ${offsetY - y}px`;
       });
     }
 
-    img.onload = sizeImage;
+    // Edit the text, update both layers, and save it.
+    editButton.addEventListener("click", () => {
+      const entered = window.prompt("Display text:", text);
+
+      if (entered === null) return;
+
+      const nextText = entered.replace(/\s+/g, " ").trim();
+
+      if (!nextText) {
+        window.alert("Please enter some text.");
+        return;
+      }
+
+      text = nextText;
+      nameEl.dataset.text = text;
+
+      buildLayer(baseEl);
+      buildLayer(revealEl);
+      fitName();
+
+      try {
+        localStorage.setItem(storageKey, text);
+      } catch {
+        window.alert(
+          "Text updated, but your browser could not save it for future visits."
+        );
+      }
+    });
+
     document.fonts.ready.then(fitName);
     new ResizeObserver(fitName).observe(boxEl);
 
-    /* ---- 4. Play the rise-up animation when the footer scrolls into view ---- */
-    new IntersectionObserver((entries, obs) => {
+    // Play the intro when the text enters the viewport.
+    new IntersectionObserver((entries, observer) => {
       if (entries[0].isIntersecting) {
-        nameEl.classList.add('is-in-view');
-        obs.disconnect();
+        nameEl.classList.add("is-in-view");
+        observer.disconnect();
       }
     }, { threshold: 0.3 }).observe(nameEl);
 
-    /* ---- 5. Feathered spotlight that follows the cursor (with easing) ---- */
-    let x = 0, y = 0, r = 0;        // current values
-    let tx = 0, ty = 0, tr = 0;     // targets
+    // Feathered spotlight that follows the cursor.
+    let x = 0;
+    let y = 0;
+    let r = 0;
+
+    let targetX = 0;
+    let targetY = 0;
+    let targetRadius = 0;
+
     let running = false;
 
-    /* Spotlight scales with the name: ~150px on desktop, smaller on phones.
-       Change 0.7 for a bigger/smaller circle. */
     const spotlightSize = () =>
-      Math.max(50, parseFloat(getComputedStyle(nameEl).fontSize) * 0.7);
+      Math.max(
+        50,
+        parseFloat(getComputedStyle(nameEl).fontSize) * 0.7
+      );
 
-    function setTarget(e) {
+    function setTarget(event) {
       const rect = revealEl.getBoundingClientRect();
-      tx = e.clientX - rect.left;
-      ty = e.clientY - rect.top;
+
+      targetX = event.clientX - rect.left;
+      targetY = event.clientY - rect.top;
     }
 
     function tick() {
-      x += (tx - x) * 0.18;
-      y += (ty - y) * 0.18;
-      r += (tr - r) * 0.12;
-      revealEl.style.setProperty('--x', `${x}px`);
-      revealEl.style.setProperty('--y', `${y}px`);
-      revealEl.style.setProperty('--r', `${r}px`);
+      x += (targetX - x) * 0.18;
+      y += (targetY - y) * 0.18;
+      r += (targetRadius - r) * 0.12;
 
-      const settled = Math.abs(tx - x) < 0.1 && Math.abs(ty - y) < 0.1 && Math.abs(tr - r) < 0.1;
-      if (settled) { running = false; return; }
+      revealEl.style.setProperty("--x", `${x}px`);
+      revealEl.style.setProperty("--y", `${y}px`);
+      revealEl.style.setProperty("--r", `${r}px`);
+
+      const settled =
+        Math.abs(targetX - x) < 0.1 &&
+        Math.abs(targetY - y) < 0.1 &&
+        Math.abs(targetRadius - r) < 0.1;
+
+      if (settled) {
+        running = false;
+        return;
+      }
+
       requestAnimationFrame(tick);
     }
 
     function start() {
-      if (!running) { running = true; requestAnimationFrame(tick); }
+      if (!running) {
+        running = true;
+        requestAnimationFrame(tick);
+      }
     }
 
-    nameEl.addEventListener('pointerenter', e => {
-      setTarget(e);
-      if (r < 1) { x = tx; y = ty; }  // start the circle where the cursor enters
-      tr = spotlightSize();
+    nameEl.addEventListener("pointerenter", event => {
+      setTarget(event);
+
+      if (r < 1) {
+        x = targetX;
+        y = targetY;
+      }
+
+      targetRadius = spotlightSize();
       start();
     });
 
-    nameEl.addEventListener('pointermove', e => {
-      setTarget(e);
+    nameEl.addEventListener("pointermove", event => {
+      setTarget(event);
       start();
     });
 
-    nameEl.addEventListener('pointerleave', () => {
-      tr = 0;                          // shrink the spotlight away
+    nameEl.addEventListener("pointerleave", () => {
+      targetRadius = 0;
       start();
     });
   </script>
