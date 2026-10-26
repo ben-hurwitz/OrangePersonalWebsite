@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ben Hurwitz — UI/UX Portfolio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@300..900&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --page-bg: #ffffff;
+      --text: #111111;
+      --rule: #f5f5f5;
+      --name-color: #f5f5f5;
+      --reveal-opacity: 0.85;
+      --rise-duration: 0.9s;
+      --rise-stagger: 45ms;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--page-bg);
+      color: var(--text);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    .container {
+      margin: 0 auto;
+      padding:
+        clamp(28px, 6vw, 64px)
+        clamp(18px, 5vw, 48px)
+        clamp(24px, 4vw, 40px);
+    }
+
+    .rule {
+      border: 0;
+      border-top: 1.5px solid var(--rule);
+    }
+
+    .footer-rule {
+      margin:
+        clamp(36px, 6vw, 52px) 0
+        clamp(12px, 2vw, 20px);
+    }
+
+    .footer-name {
+      line-height: 1;
+      overflow: hidden;
+    }
+
+    .name {
+    position: relative;
+    display: block;
+    width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-family: "Darker Grotesque", system-ui, sans-serif;
+    font-size: 150px; /* Same size regardless of text length */
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    cursor: default;
+    user-select: none;
+    }
+
+    .layer {
+      display: block;
+    }
+
+    .layer--base {
+      filter: url(#inner-glow);
+    }
+
+    .layer--base .char {
+      color: var(--name-color);
+    }
+
+    .layer--reveal {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: var(--reveal-opacity);
+
+      -webkit-mask-image: radial-gradient(
+        circle var(--r, 0px) at var(--x, 50%) var(--y, 50%),
+        #000 0%,
+        rgba(0, 0, 0, 0.2) 40%,
+        transparent 100%
+      );
+
+      mask-image: radial-gradient(
+        circle var(--r, 0px) at var(--x, 50%) var(--y, 50%),
+        #000 0%,
+        rgba(0, 0, 0, 0.2) 40%,
+        transparent 100%
+      );
+    }
+
+    .layer--reveal .char {
+      color: transparent;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .word {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      padding: 0.1em 0 0.15em;
+      margin: -0.1em 0 -0.15em;
+      max-width: 100%;
+    }
+
+    .char {
+      display: inline-block;
+      transform: translateY(110%);
+      animation:
+        rise var(--rise-duration)
+        cubic-bezier(0.2, 0.7, 0.1, 1)
+        forwards paused;
+      animation-delay: calc(var(--i) * var(--rise-stagger) + 150ms);
+    }
+
+    .name.is-in-view .char {
+      animation-play-state: running;
+    }
+
+    @keyframes rise {
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    /* Discreet edit button */
+    .edit-text-button {
+      position: fixed;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      left: max(12px, env(safe-area-inset-left));
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      padding: 8px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: #777;
+      opacity: 0.3;
+      cursor: pointer;
+      transition: opacity 0.2s ease, background 0.2s ease;
+    }
+
+    .edit-text-button:hover,
+    .edit-text-button:focus-visible {
+      opacity: 1;
+      background: #f5f5f5;
+    }
+
+    .edit-text-button:focus-visible {
+      outline: 2px solid #777;
+      outline-offset: 2px;
+    }
+
+    .edit-text-button svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .char {
+        animation: none;
+        transform: none;
+      }
+    }
+
+    /* Added writing row; existing page styles remain unchanged. */
+    .writing-row {
+      display: block;
+      width: 100%;
+      height: 2.5em;
+      margin-top: 24px;
+      padding: 0;
+      border: 0;
+      outline: none;
+      border-radius: 0;
+      resize: none;
+      overflow: hidden;
+      background: transparent;
+      color: var(--name-color);
+      caret-color: #aaa;
+      font-family: "Darker Grotesque", system-ui, sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      white-space: pre-wrap;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+    }
+    .writing-row::placeholder { color: var(--name-color); opacity: 1; }
+    .writing-size {
+      position: fixed;
+      left: max(52px, calc(env(safe-area-inset-left) + 40px));
+      bottom: max(18px, calc(env(safe-area-inset-bottom) + 6px));
+      z-index: 100;
+      width: 62px;
+      border: 0;
+      background: transparent;
+      color: #777;
+      opacity: 0.3;
+      font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    .writing-size:hover, .writing-size:focus-visible { opacity: 1; }
+  </style>
+</head>
+
+<body>
+  <svg
+    width="0"
+    height="0"
+    style="position: absolute"
+    aria-hidden="true"
+  >
+    <filter id="inner-glow" x="-5%" y="-5%" width="110%" height="110%">
+      <feOffset in="SourceAlpha" dy="1" result="offset" />
+      <feGaussianBlur in="offset" stdDeviation="2" result="blur" />
+      <feComposite
+        in="blur"
+        in2="SourceAlpha"
+        operator="arithmetic"
+        k2="-1"
+        k3="1"
+        result="inner"
+      />
+      <feFlood flood-color="#000" flood-opacity="0.05" />
+      <feComposite in2="inner" operator="in" result="shadow" />
+      <feMerge>
+        <feMergeNode in="SourceGraphic" />
+        <feMergeNode in="shadow" />
+      </feMerge>
+    </filter>
+  </svg>
+
+  <div class="container">
+    <footer>
+      <hr class="rule footer-rule" />
+
+      <div class="footer-name">
+        <div
+          class="name"
+          aria-hidden="true"
+          data-text="Design is an attitude."
+          data-image="assets/photo-1501854140801-50d01698950b.png"
+        >
+          <span class="layer layer--base"></span>
+          <span class="layer layer--reveal"></span>
+        </div>
+      </div>
+      <textarea id="writing-row" class="writing-row" rows="2" wrap="soft"
+        placeholder="Start writing here." aria-label="Write a private entry"
+        autocomplete="off" spellcheck="false"></textarea>
+      <select id="writing-size" class="writing-size" aria-label="Writing text size" title="Writing text size">
+        <option value="12">12 px</option><option value="16">16 px</option>
+        <option value="24">24 px</option><option value="32" selected>32 px</option>
+        <option value="48">48 px</option><option value="64">64 px</option>
+      </select>
+    </footer>
+  </div>
+
+  <button
+    class="edit-text-button"
+    id="edit-text-button"
+    type="button"
+    aria-label="Edit display text"
+    title="Edit display text"
+  >
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m16 3 5 5-12 12-6 1 1-6Z" />
+      <path d="m14 5 5 5" />
+    </svg>
+  </button>
+
+  <script>
+    const nameEl = document.querySelector(".name");
+    const boxEl = document.querySelector(".footer-name");
+    const baseEl = nameEl.querySelector(".layer--base");
+    const revealEl = nameEl.querySelector(".layer--reveal");
+    const editButton = document.getElementById("edit-text-button");
+
+    const storageKey = "ben-portfolio:footer-text";
+    const imageUrl = nameEl.dataset.image;
+
+    let text = nameEl.dataset.text;
+
+    // Restore the last saved text before building the letters.
+    try {
+      const savedText = localStorage.getItem(storageKey);
+
+      if (savedText !== null && savedText.trim()) {
+        text = savedText;
+      }
+    } catch {
+      // Use the default text if browser storage is unavailable.
+    }
+
+    nameEl.dataset.text = text;
+
+    // Build identical text in both layers.
+    function buildLayer(layer) {
+      layer.replaceChildren();
+
+      let i = 0;
+
+      text.split(" ").forEach((word, wordIndex) => {
+        if (wordIndex > 0) {
+          layer.appendChild(document.createTextNode(" "));
+        }
+
+        const wordSpan = document.createElement("span");
+        wordSpan.className = "word";
+
+        [...word].forEach(letter => {
+          const char = document.createElement("span");
+          char.className = "char";
+          char.textContent = letter;
+          char.style.setProperty("--i", i++);
+
+          wordSpan.appendChild(char);
+        });
+
+        layer.appendChild(wordSpan);
+      });
+    }
+
+    buildLayer(baseEl);
+    buildLayer(revealEl);
+
+    const img = new Image();
+    img.onload = sizeImage;
+    img.src = imageUrl;
+
+    // Scale the text to the available width.
+    function fitName() {
+    sizeImage();
+    }
+
+    // Give each letter a slice of one continuous image.
+    function sizeImage() {
+      if (!img.naturalWidth) return;
+
+      const width = revealEl.offsetWidth;
+      const height = revealEl.offsetHeight;
+
+      const scale = Math.max(
+        width / img.naturalWidth,
+        height / img.naturalHeight
+      );
+
+      const imageWidth = img.naturalWidth * scale;
+      const imageHeight = img.naturalHeight * scale;
+      const offsetX = (width - imageWidth) / 2;
+      const offsetY = (height - imageHeight) / 2;
+
+      revealEl.querySelectorAll(".char").forEach(char => {
+        let x = 0;
+        let y = 0;
+        let element = char;
+
+        while (element && element !== revealEl) {
+          x += element.offsetLeft;
+          y += element.offsetTop;
+          element = element.offsetParent;
+        }
+
+        char.style.backgroundImage = `url("${imageUrl}")`;
+        char.style.backgroundSize = `${imageWidth}px ${imageHeight}px`;
+        char.style.backgroundPosition = `${offsetX - x}px ${offsetY - y}px`;
+      });
+    }
+
+    // Edit the text, update both layers, and save it.
+    editButton.addEventListener("click", () => {
+      const entered = window.prompt("Display text:", text);
+
+      if (entered === null) return;
+
+      const nextText = entered.replace(/\s+/g, " ").trim();
+
+      if (!nextText) {
+        window.alert("Please enter some text.");
+        return;
+      }
+
+      text = nextText;
+      nameEl.dataset.text = text;
+
+      buildLayer(baseEl);
+      buildLayer(revealEl);
+      fitName();
+
+      try {
+        localStorage.setItem(storageKey, text);
+      } catch {
+        window.alert(
+          "Text updated, but your browser could not save it for future visits."
+        );
+      }
+    });
+
+    document.fonts.ready.then(fitName);
+    new ResizeObserver(fitName).observe(boxEl);
+
+    // Play the intro when the text enters the viewport.
+    new IntersectionObserver((entries, observer) => {
+      if (entries[0].isIntersecting) {
+        nameEl.classList.add("is-in-view");
+        observer.disconnect();
+      }
+    }, { threshold: 0.3 }).observe(nameEl);
+
+    // Feathered spotlight that follows the cursor.
+    let x = 0;
+    let y = 0;
+    let r = 0;
+
+    let targetX = 0;
+    let targetY = 0;
+    let targetRadius = 0;
+
+    let running = false;
+
+    const spotlightSize = () =>
+      Math.max(
+        50,
+        parseFloat(getComputedStyle(nameEl).fontSize) * 0.7
+      );
+
+    function setTarget(event) {
+      const rect = revealEl.getBoundingClientRect();
+
+      targetX = event.clientX - rect.left;
+      targetY = event.clientY - rect.top;
+    }
+
+    function tick() {
+      x += (targetX - x) * 0.18;
+      y += (targetY - y) * 0.18;
+      r += (targetRadius - r) * 0.12;
+
+      revealEl.style.setProperty("--x", `${x}px`);
+      revealEl.style.setProperty("--y", `${y}px`);
+      revealEl.style.setProperty("--r", `${r}px`);
+
+      const settled =
+        Math.abs(targetX - x) < 0.1 &&
+        Math.abs(targetY - y) < 0.1 &&
+        Math.abs(targetRadius - r) < 0.1;
+
+      if (settled) {
+        running = false;
+        return;
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    function start() {
+      if (!running) {
+        running = true;
+        requestAnimationFrame(tick);
+      }
+    }
+
+    nameEl.addEventListener("pointerenter", event => {
+      setTarget(event);
+
+      if (r < 1) {
+        x = targetX;
+        y = targetY;
+      }
+
+      targetRadius = spotlightSize();
+      start();
+    });
+
+    nameEl.addEventListener("pointermove", event => {
+      setTarget(event);
+      start();
+    });
+
+    nameEl.addEventListener("pointerleave", () => {
+      targetRadius = 0;
+      start();
+    });
+  </script>
+
+  <script>
+    (() => {
+      const writer = document.getElementById("writing-row");
+      const size = document.getElementById("writing-size");
+      const prefix = "ben-portfolio:writing:";
+      const entryKey = prefix + (globalThis.crypto?.randomUUID?.() ||
+        Date.now() + "-" + Math.random().toString(36).slice(2));
+      const createdAt = new Date().toISOString();
+      let hiddenText = "";
+      let started = false;
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      const segmenter = globalThis.Intl?.Segmenter ?
+        new Intl.Segmenter(undefined, { granularity: "grapheme" }) : null;
+
+      function save() {
+        if (!started) return;
+        try {
+          localStorage.setItem(entryKey, JSON.stringify({
+            id: entryKey.slice(prefix.length), createdAt,
+            updatedAt: new Date().toISOString(),
+            text: hiddenText + writer.value,
+            fontSize: Number(size.value)
+          }));
+          writer.removeAttribute("title");
+        } catch {
+          writer.title = "This entry could not be saved. Browser storage may be full or unavailable.";
+        }
+      }
+
+      function keepLatestLines() {
+        const style = getComputedStyle(writer);
+        context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+        const spacing = parseFloat(style.letterSpacing) || 0;
+        const available = Math.max(1, writer.clientWidth - 2);
+        const value = writer.value;
+        const starts = [0];
+        let current = "";
+        let count = 0;
+        let offset = 0;
+        const characters = segmenter ?
+          Array.from(segmenter.segment(value), part => part.segment) :
+          Array.from(value);
+        for (const character of characters) {
+          if (character === "\n") {
+            starts.push(offset + 1);
+            current = "";
+            count = 0;
+          } else {
+            const width = context.measureText(current + character).width + spacing * count;
+            if (current && width > available) {
+              starts.push(offset);
+              current = "";
+              count = 0;
+            }
+            current += character;
+            count++;
+          }
+          offset += character.length;
+        }
+        if (starts.length > 2) {
+          const cut = starts[starts.length - 2];
+          const selectionStart = writer.selectionStart;
+          const selectionEnd = writer.selectionEnd;
+          const direction = writer.selectionDirection;
+          hiddenText += value.slice(0, cut);
+          writer.value = value.slice(cut);
+          writer.setSelectionRange(Math.max(0, selectionStart - cut),
+            Math.max(0, selectionEnd - cut), direction);
+        }
+        writer.scrollTop = 0;
+        writer.scrollLeft = 0;
+      }
+
+      try {
+        const saved = localStorage.getItem(prefix + "font-size");
+        if (Array.from(size.options).some(option => option.value === saved)) size.value = saved;
+      } catch {}
+      writer.style.fontSize = size.value + "px";
+      writer.addEventListener("input", event => {
+        started = true;
+        if (!event.isComposing) keepLatestLines();
+        save();
+      });
+      writer.addEventListener("compositionend", () => { keepLatestLines(); save(); });
+      size.addEventListener("change", () => {
+        writer.style.fontSize = size.value + "px";
+        try { localStorage.setItem(prefix + "font-size", size.value); } catch {}
+        keepLatestLines();
+        save();
+      });
+      new ResizeObserver(() => { keepLatestLines(); save(); }).observe(writer);
+      document.fonts.ready.then(() => { keepLatestLines(); save(); });
+    })();
+  </script>
+</body>
+</html>

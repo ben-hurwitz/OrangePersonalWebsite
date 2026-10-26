@@ -187,6 +187,53 @@
         transform: none;
       }
     }
+
+    /* Added writing row; existing page styles remain unchanged. */
+    .writing-row {
+      display: block;
+      width: 100%;
+      height: 2.5em;
+      margin-top: 24px;
+      padding: 0;
+      border: 0;
+      outline: none;
+      border-radius: 0;
+      resize: none;
+      overflow: hidden;
+      background: transparent;
+      color: var(--name-color);
+      caret-color: #aaa;
+      font-family: "Darker Grotesque", system-ui, sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      white-space: pre-wrap;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+    }
+    .writing-row::placeholder {
+      color: var(--name-color);
+      opacity: 0;
+      transition: opacity 0.9s ease;
+    }
+    .writing-row.is-ready::placeholder { opacity: 1; }
+    @media (prefers-reduced-motion: reduce) {
+      .writing-row::placeholder { transition: none; }
+    }
+    .writing-size {
+      position: fixed;
+      left: max(52px, calc(env(safe-area-inset-left) + 40px));
+      bottom: max(18px, calc(env(safe-area-inset-bottom) + 6px));
+      z-index: 100;
+      width: 62px;
+      border: 0;
+      background: transparent;
+      color: #777;
+      opacity: 0.3;
+      font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    .writing-size:hover, .writing-size:focus-visible { opacity: 1; }
   </style>
 </head>
 
@@ -232,6 +279,14 @@
           <span class="layer layer--reveal"></span>
         </div>
       </div>
+      <textarea id="writing-row" class="writing-row" rows="2" wrap="soft"
+        placeholder="Start writing here." aria-label="Write a private entry"
+        autocomplete="off" spellcheck="false"></textarea>
+      <select id="writing-size" class="writing-size" aria-label="Writing text size" title="Writing text size">
+        <option value="12">12 px</option><option value="16">16 px</option>
+        <option value="24">24 px</option><option value="32" selected>32 px</option>
+        <option value="48">48 px</option><option value="64">64 px</option>
+      </select>
     </footer>
   </div>
 
@@ -468,6 +523,119 @@
       targetRadius = 0;
       start();
     });
+  </script>
+
+  <script>
+    (() => {
+      const writer = document.getElementById("writing-row");
+      const size = document.getElementById("writing-size");
+      const heading = document.querySelector(".name");
+      let placeholderScheduled = false;
+      function revealPlaceholderAfterName() {
+        if (placeholderScheduled || !heading.classList.contains("is-in-view")) return;
+        placeholderScheduled = true;
+        headingObserver.disconnect();
+        requestAnimationFrame(async () => {
+          const animations = heading.getAnimations({ subtree: true })
+            .filter(animation => animation.animationName === "rise");
+          await Promise.allSettled(animations.map(animation => animation.finished));
+          writer.classList.add("is-ready");
+        });
+      }
+      const headingObserver = new MutationObserver(revealPlaceholderAfterName);
+      headingObserver.observe(heading, { attributes: true, attributeFilter: ["class"] });
+      revealPlaceholderAfterName();
+
+      const prefix = "ben-portfolio:writing:";
+      const entryKey = prefix + (globalThis.crypto?.randomUUID?.() ||
+        Date.now() + "-" + Math.random().toString(36).slice(2));
+      const createdAt = new Date().toISOString();
+      let hiddenText = "";
+      let started = false;
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      const segmenter = globalThis.Intl?.Segmenter ?
+        new Intl.Segmenter(undefined, { granularity: "grapheme" }) : null;
+
+      function save() {
+        if (!started) return;
+        try {
+          localStorage.setItem(entryKey, JSON.stringify({
+            id: entryKey.slice(prefix.length), createdAt,
+            updatedAt: new Date().toISOString(),
+            text: hiddenText + writer.value,
+            fontSize: Number(size.value)
+          }));
+          writer.removeAttribute("title");
+        } catch {
+          writer.title = "This entry could not be saved. Browser storage may be full or unavailable.";
+        }
+      }
+
+      function keepLatestLines() {
+        const style = getComputedStyle(writer);
+        context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+        const spacing = parseFloat(style.letterSpacing) || 0;
+        const available = Math.max(1, writer.clientWidth - 2);
+        const value = writer.value;
+        const starts = [0];
+        let current = "";
+        let count = 0;
+        let offset = 0;
+        const characters = segmenter ?
+          Array.from(segmenter.segment(value), part => part.segment) :
+          Array.from(value);
+        for (const character of characters) {
+          if (character === "\n") {
+            starts.push(offset + 1);
+            current = "";
+            count = 0;
+          } else {
+            const width = context.measureText(current + character).width + spacing * count;
+            if (current && width > available) {
+              starts.push(offset);
+              current = "";
+              count = 0;
+            }
+            current += character;
+            count++;
+          }
+          offset += character.length;
+        }
+        if (starts.length > 2) {
+          const cut = starts[starts.length - 2];
+          const selectionStart = writer.selectionStart;
+          const selectionEnd = writer.selectionEnd;
+          const direction = writer.selectionDirection;
+          hiddenText += value.slice(0, cut);
+          writer.value = value.slice(cut);
+          writer.setSelectionRange(Math.max(0, selectionStart - cut),
+            Math.max(0, selectionEnd - cut), direction);
+        }
+        writer.scrollTop = 0;
+        writer.scrollLeft = 0;
+      }
+
+      try {
+        const saved = localStorage.getItem(prefix + "font-size");
+        if (Array.from(size.options).some(option => option.value === saved)) size.value = saved;
+      } catch {}
+      writer.style.fontSize = size.value + "px";
+      writer.addEventListener("input", event => {
+        started = true;
+        if (!event.isComposing) keepLatestLines();
+        save();
+      });
+      writer.addEventListener("compositionend", () => { keepLatestLines(); save(); });
+      size.addEventListener("change", () => {
+        writer.style.fontSize = size.value + "px";
+        try { localStorage.setItem(prefix + "font-size", size.value); } catch {}
+        keepLatestLines();
+        save();
+      });
+      new ResizeObserver(() => { keepLatestLines(); save(); }).observe(writer);
+      document.fonts.ready.then(() => { keepLatestLines(); save(); });
+    })();
   </script>
 </body>
 </html>
