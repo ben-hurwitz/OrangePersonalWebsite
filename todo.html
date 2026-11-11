@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>To-do</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    body { margin: 0; background: #fff; color: #333; }
+
+    main {
+      padding: clamp(28px, 6vw, 64px) clamp(18px, 5vw, 48px)
+        calc(6rem + env(safe-area-inset-bottom, 0px));
+    }
+
+    ul { list-style: none; margin: 0; padding: 0; }
+    li { scroll-margin-top: clamp(28px, 6vw, 64px); }
+    li + li { margin-top: .65rem; }
+
+    button {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: inherit;
+      font: 700 1rem/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif;
+      cursor: pointer;
+    }
+
+    button:focus-visible { outline: 2px solid; outline-offset: 5px; }
+    button:disabled { opacity: .5; cursor: default; }
+
+    .task-button {
+      display: block;
+      font-size: clamp(2rem, 6.5vw, 6rem);
+      line-height: 1.08;
+      letter-spacing: -.045em;
+      text-align: left;
+      overflow-wrap: anywhere;
+    }
+
+    .label {
+      background: linear-gradient(currentColor, currentColor) left 54% / 0 .06em no-repeat;
+      transition: background-size .32s cubic-bezier(.2, .7, .1, 1);
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
+    [aria-pressed="true"] .label { background-size: 100% .06em; }
+
+    #sign-in { max-width: 22rem; }
+    #sign-in label { display: block; margin-bottom: 1rem; }
+    #sign-in input {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      margin-top: .25rem;
+      padding: .5rem;
+      border: 1px solid #ccc;
+      font: inherit;
+    }
+
+    #add-task {
+      position: fixed;
+      inset: auto 0 0;
+      padding: 1rem clamp(18px, 5vw, 48px)
+        max(1rem, env(safe-area-inset-bottom));
+      background: #fff;
+      border-top: 1px solid #eee;
+    }
+
+    #task-fields { display: flex; align-items: center; gap: 1rem; }
+
+    #task-name {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      color: inherit;
+      font: inherit;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    #sign-out { font-weight: 400; color: #666; }
+    #status, #task-status { margin: 0 0 .75rem; color: #666; }
+    #status:empty, #task-status:empty { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .label { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main aria-label="To-do list">
+    <p id="status" role="status">Loading…</p>
+
+    <form id="sign-in" hidden>
+      <label>
+        Email
+        <input name="email" type="email" autocomplete="username" required>
+      </label>
+      <label>
+        Password
+        <input name="password" type="password" autocomplete="current-password" required>
+      </label>
+      <button type="submit">Sign in</button>
+    </form>
+
+    <section id="todo" aria-label="Tasks" hidden>
+      <ul id="tasks"></ul>
+      <form id="add-task">
+        <p id="task-status" role="status"></p>
+        <div id="task-fields">
+          <input id="task-name" aria-label="New task" placeholder="New task…"
+                 maxlength="500" autocomplete="off" required>
+          <button id="add" type="submit">Add</button>
+          <button id="sign-out" type="button">Sign out</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const SUPABASE_URL = "https://amhmrwaifzsfevleoeoo.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_NCWntaISPv5gw57HU7HhmQ_aTW1BLuM";
+
+    const status = document.querySelector("#status");
+    const taskStatus = document.querySelector("#task-status");
+    const signIn = document.querySelector("#sign-in");
+    const signInButton = signIn.querySelector("button");
+    const signOut = document.querySelector("#sign-out");
+    const todo = document.querySelector("#todo");
+    const list = document.querySelector("#tasks");
+    const form = document.querySelector("#add-task");
+    const input = document.querySelector("#task-name");
+    const addButton = document.querySelector("#add");
+
+    if (SUPABASE_URL.startsWith("PASTE_") || SUPABASE_KEY.startsWith("PASTE_")) {
+      status.textContent = "Set the Supabase project URL and publishable key in todo.html.";
+    } else {
+      start(createClient(SUPABASE_URL, SUPABASE_KEY));
+    }
+
+    function start(db) {
+      function taskRow(task) {
+        const row = document.createElement("li");
+        const button = document.createElement("button");
+        const label = document.createElement("span");
+
+        button.type = "button";
+        button.className = "task-button";
+        button.setAttribute("aria-pressed", String(task.done));
+        label.className = "label";
+        label.textContent = task.name;
+        button.append(label);
+        row.append(button);
+
+        let saving = false;
+
+        button.addEventListener("click", async () => {
+          if (saving) return;
+
+          saving = true;
+          taskStatus.textContent = "";
+          const done = !task.done;
+          button.setAttribute("aria-pressed", String(done));
+
+          try {
+            const { data, error } = await db.from("tasks")
+              .update({ done }).eq("id", task.id).select("done").single();
+
+            if (error) throw error;
+            task.done = data.done;
+          } catch (error) {
+            taskStatus.textContent = error.message;
+          } finally {
+            button.setAttribute("aria-pressed", String(task.done));
+            saving = false;
+          }
+        });
+
+        return row;
+      }
+
+      async function loadTasks() {
+        signIn.hidden = true;
+        todo.hidden = true;
+        status.textContent = "Loading tasks…";
+
+        const { data, error } = await db.from("tasks")
+          .select("id, name, done").order("id");
+
+        todo.hidden = false;
+        status.textContent = "";
+
+        if (error) {
+          taskStatus.textContent = error.message;
+          return;
+        }
+
+        list.style.paddingBottom = "";
+        list.replaceChildren(...data.map(taskRow));
+        taskStatus.textContent = data.length ? "" : "Add your first task.";
+
+        const first = list.children[data.findIndex(task => !task.done)];
+        if (first) {
+          const top = parseFloat(getComputedStyle(first).scrollMarginTop);
+          const remaining = list.getBoundingClientRect().bottom -
+            first.getBoundingClientRect().top;
+
+          list.style.paddingBottom = Math.max(0, innerHeight - top - remaining) + "px";
+          first.scrollIntoView({ block: "start" });
+        }
+      }
+
+      function showSignIn() {
+        todo.hidden = true;
+        list.replaceChildren();
+        input.value = "";
+        taskStatus.textContent = "";
+        status.textContent = "";
+        signIn.hidden = false;
+        window.scrollTo(0, 0);
+      }
+
+      signIn.addEventListener("submit", async event => {
+        event.preventDefault();
+        const fields = new FormData(signIn);
+        signInButton.disabled = true;
+        status.textContent = "Signing in…";
+
+        try {
+          const { error } = await db.auth.signInWithPassword({
+            email: fields.get("email").trim(),
+            password: fields.get("password")
+          });
+
+          if (error) throw error;
+          signIn.reset();
+          await loadTasks();
+        } catch (error) {
+          status.textContent = error.message;
+        } finally {
+          signInButton.disabled = false;
+        }
+      });
+
+      form.addEventListener("submit", async event => {
+        event.preventDefault();
+        const name = input.value.trim();
+        if (!name || addButton.disabled) return;
+
+        addButton.disabled = true;
+        taskStatus.textContent = "Saving…";
+
+        try {
+          const { data, error } = await db.from("tasks")
+            .insert({ name }).select("id, name, done").single();
+
+          if (error) throw error;
+          list.append(taskRow(data));
+          if (input.value.trim() === name) input.value = "";
+          taskStatus.textContent = "";
+        } catch (error) {
+          taskStatus.textContent = error.message;
+        } finally {
+          addButton.disabled = false;
+        }
+      });
+
+      signOut.addEventListener("click", async () => {
+        signOut.disabled = true;
+
+        try {
+          const { error } = await db.auth.signOut({ scope: "local" });
+          if (error) throw error;
+          showSignIn();
+        } catch (error) {
+          taskStatus.textContent = error.message;
+        } finally {
+          signOut.disabled = false;
+        }
+      });
+
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+      async function initialize() {
+        try {
+          const { data, error } = await db.auth.getSession();
+          if (error) throw error;
+
+          if (data.session) {
+            await loadTasks();
+          } else {
+            showSignIn();
+          }
+        } catch (error) {
+          showSignIn();
+          status.textContent = error.message;
+        }
+      }
+
+      initialize();
+    }
+  </script>
+</body>
+</html>
