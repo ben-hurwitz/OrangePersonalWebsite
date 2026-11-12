@@ -10,11 +10,12 @@
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
+    [hidden] { display: none !important; }
     body { margin: 0; background: #fff; color: #333; }
 
     main {
       padding: clamp(28px, 6vw, 64px) clamp(18px, 5vw, 48px)
-        calc(6rem + env(safe-area-inset-bottom, 0px));
+        calc(8rem + env(safe-area-inset-bottom, 0px));
     }
 
     ul { list-style: none; margin: 0; padding: 0; }
@@ -30,29 +31,63 @@
       cursor: pointer;
     }
 
-    button:focus-visible { outline: 2px solid; outline-offset: 5px; }
+    #add {
+      color: white;
+    }
+
+    button:focus-visible,
+    summary:focus-visible {
+      outline: 2px solid #777;
+      outline-offset: 5px;
+    }
+
     button:disabled { opacity: .5; cursor: default; }
+
+    #todo {
+      --task-color: #333;
+      --completed-color: #e8e8e8;
+      --placeholder-color: #e8e8e8;
+    }
+
+    #todo.incognito {
+      --task-color: #e8e8e8;
+      --completed-color: #f0f0f0;
+      --placeholder-color: #e8e8e8;
+    }
 
     .task-button {
       display: block;
-      font-size: clamp(2rem, 6.5vw, 6rem);
+      color: var(--task-color);
+      font-size: clamp(2rem, 3vw, 6rem);
       line-height: 1.08;
       letter-spacing: -.045em;
       text-align: left;
       overflow-wrap: anywhere;
     }
 
+    .task-button[data-done="true"] { color: var(--completed-color); }
+
+    #todo.selecting .task-button[aria-pressed="true"] {
+      outline: 1px dashed #777;
+      outline-offset: 4px;
+    }
+
     .label {
-      background: linear-gradient(currentColor, currentColor) left 54% / 0 .06em no-repeat;
+      --strike-thickness: .11em;
+      background: linear-gradient(currentColor, currentColor)
+        left 54% / 0 var(--strike-thickness) no-repeat;
       transition: background-size .32s cubic-bezier(.2, .7, .1, 1);
       box-decoration-break: clone;
       -webkit-box-decoration-break: clone;
     }
 
-    [aria-pressed="true"] .label { background-size: 100% .06em; }
+    .task-button[data-done="true"] .label {
+      background-size: 100% var(--strike-thickness);
+    }
 
     #sign-in { max-width: 22rem; }
     #sign-in label { display: block; margin-bottom: 1rem; }
+
     #sign-in input {
       display: block;
       box-sizing: border-box;
@@ -63,7 +98,7 @@
       font: inherit;
     }
 
-    #add-task {
+    #toolbar {
       position: fixed;
       inset: auto 0 0;
       padding: 1rem clamp(18px, 5vw, 48px)
@@ -72,19 +107,69 @@
       border-top: 1px solid #eee;
     }
 
-    #task-fields { display: flex; align-items: center; gap: 1rem; }
+    #toolbar-row,
+    #task-fields,
+    #delete-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    #add-task { flex: 1; min-width: 0; }
 
     #task-name {
       flex: 1;
       min-width: 0;
       border: 0;
-      color: inherit;
+      color: var(--task-color);
+      caret-color: #F0F0F0;
       font: inherit;
       font-size: 1.25rem;
       font-weight: 700;
     }
 
-    #sign-out { font-weight: 400; color: #666; }
+    #task-name::placeholder { color: var(--placeholder-color); opacity: 1; }
+
+    #options { position: relative; }
+
+    #options summary {
+      display: grid;
+      place-items: center;
+      width: 2rem;
+      height: 2rem;
+      color: #666;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    #options summary::-webkit-details-marker { display: none; }
+    #options[open] summary span { transform: rotate(180deg); }
+
+    #task-actions {
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + .75rem);
+      display: grid;
+      min-width: 8rem;
+      padding: .35rem;
+      border: 1px solid #eee;
+      background: #fff;
+    }
+
+    #task-actions button {
+      padding: .55rem .65rem;
+      text-align: left;
+      font-size: .875rem;
+      color: #666;
+    }
+
+    #task-actions button:hover:not(:disabled) { background: #f5f5f5; }
+    #incognito[aria-pressed="true"] { text-decoration: underline; }
+
+    #delete-controls { flex-wrap: wrap; }
+    #delete-selected { color: #a12c2c; }
+    #cancel-delete { color: #666; }
+
     #status, #task-status { margin: 0 0 .75rem; color: #666; }
     #status:empty, #task-status:empty { display: none; }
 
@@ -111,23 +196,44 @@
 
     <section id="todo" aria-label="Tasks" hidden>
       <ul id="tasks"></ul>
-      <form id="add-task">
+
+      <div id="toolbar">
         <p id="task-status" role="status"></p>
-        <div id="task-fields">
-          <input id="task-name" aria-label="New task" placeholder="New task…"
-                 maxlength="500" autocomplete="off" required>
-          <button id="add" type="submit">Add</button>
-          <button id="sign-out" type="button">Sign out</button>
+
+        <div id="toolbar-row">
+          <form id="add-task">
+            <div id="task-fields">
+              <input id="task-name" aria-label="New task" placeholder="New task…"
+                     maxlength="500" autocomplete="off" required>
+              <button id="add" type="submit">Add</button>
+            </div>
+          </form>
+
+          <details id="options">
+            <summary aria-label="Task options"><span aria-hidden="true">↑</span></summary>
+            <div id="task-actions">
+              <button id="incognito" type="button" aria-pressed="false">Incognito</button>
+              <button id="delete-mode" type="button">Delete</button>
+              <button id="sign-out" type="button">Sign out</button>
+            </div>
+          </details>
+
+          <div id="delete-controls" hidden>
+            <button id="delete-selected" type="button" disabled>Delete selected</button>
+            <button id="cancel-delete" type="button">Cancel</button>
+          </div>
         </div>
-      </form>
+      </div>
     </section>
   </main>
 
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-    const SUPABASE_URL = "https://amhmrwaifzsfevleoeoo.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_NCWntaISPv5gw57HU7HhmQ_aTW1BLuM";
+    const db = createClient(
+      "https://amhmrwaifzsfevleoeoo.supabase.co",
+      "sb_publishable_NCWntaISPv5gw57HU7HhmQ_aTW1BLuM"
+    );
 
     const status = document.querySelector("#status");
     const taskStatus = document.querySelector("#task-status");
@@ -139,174 +245,334 @@
     const form = document.querySelector("#add-task");
     const input = document.querySelector("#task-name");
     const addButton = document.querySelector("#add");
+    const options = document.querySelector("#options");
+    const optionsToggle = options.querySelector("summary");
+    const incognito = document.querySelector("#incognito");
+    const deleteMode = document.querySelector("#delete-mode");
+    const deleteControls = document.querySelector("#delete-controls");
+    const deleteSelected = document.querySelector("#delete-selected");
+    const cancelDelete = document.querySelector("#cancel-delete");
 
-    if (SUPABASE_URL.startsWith("PASTE_") || SUPABASE_KEY.startsWith("PASTE_")) {
-      status.textContent = "Set the Supabase project URL and publishable key in todo.html.";
-    } else {
-      start(createClient(SUPABASE_URL, SUPABASE_KEY));
+    const incognitoKey = "todo:incognito";
+    const tasks = new Map();
+    const selected = new Set();
+    let selecting = false;
+    let deleting = false;
+
+    function setIncognito(enabled) {
+      todo.classList.toggle("incognito", enabled);
+      incognito.setAttribute("aria-pressed", String(enabled));
     }
 
-    function start(db) {
-      function taskRow(task) {
-        const row = document.createElement("li");
-        const button = document.createElement("button");
-        const label = document.createElement("span");
+    try {
+      setIncognito(localStorage.getItem(incognitoKey) === "true");
+    } catch {
+      setIncognito(false);
+    }
 
-        button.type = "button";
-        button.className = "task-button";
-        button.setAttribute("aria-pressed", String(task.done));
-        label.className = "label";
-        label.textContent = task.name;
-        button.append(label);
-        row.append(button);
+    incognito.addEventListener("click", () => {
+      const enabled = !todo.classList.contains("incognito");
+      setIncognito(enabled);
 
-        let saving = false;
-
-        button.addEventListener("click", async () => {
-          if (saving) return;
-
-          saving = true;
-          taskStatus.textContent = "";
-          const done = !task.done;
-          button.setAttribute("aria-pressed", String(done));
-
-          try {
-            const { data, error } = await db.from("tasks")
-              .update({ done }).eq("id", task.id).select("done").single();
-
-            if (error) throw error;
-            task.done = data.done;
-          } catch (error) {
-            taskStatus.textContent = error.message;
-          } finally {
-            button.setAttribute("aria-pressed", String(task.done));
-            saving = false;
-          }
-        });
-
-        return row;
+      try {
+        localStorage.setItem(incognitoKey, String(enabled));
+      } catch {
+        taskStatus.textContent = "This browser couldn’t save your incognito setting.";
       }
 
-      async function loadTasks() {
-        signIn.hidden = true;
-        todo.hidden = true;
-        status.textContent = "Loading tasks…";
+      options.open = false;
+      optionsToggle.focus();
+    });
 
-        const { data, error } = await db.from("tasks")
-          .select("id, name, done").order("id");
+    document.addEventListener("click", event => {
+      if (options.open && !options.contains(event.target)) {
+        options.open = false;
+      }
+    });
 
-        todo.hidden = false;
-        status.textContent = "";
+    options.addEventListener("keydown", event => {
+      if (event.key === "Escape" && options.open) {
+        options.open = false;
+        optionsToggle.focus();
+      }
+    });
 
-        if (error) {
-          taskStatus.textContent = error.message;
+    function updateTaskButton(task, button) {
+      button.dataset.done = String(task.done);
+      button.setAttribute("aria-pressed", String(
+        selecting ? selected.has(task.id) : task.done
+      ));
+    }
+
+    function updateSelectionCount() {
+      deleteSelected.disabled = deleting || selected.size === 0;
+      deleteSelected.textContent = selected.size
+        ? "Delete selected (" + selected.size + ")"
+        : "Delete selected";
+    }
+
+    function updateDeleteControls() {
+      todo.classList.toggle("selecting", selecting);
+      form.hidden = selecting;
+      options.hidden = selecting;
+      deleteControls.hidden = !selecting;
+      deleteMode.disabled = tasks.size === 0;
+      cancelDelete.disabled = deleting;
+      signOut.disabled = deleting;
+      updateSelectionCount();
+
+      for (const { task, button } of tasks.values()) {
+        updateTaskButton(task, button);
+      }
+    }
+
+    function setDeleteMode(enabled) {
+      selecting = enabled;
+      selected.clear();
+      options.open = false;
+      taskStatus.textContent = enabled
+        ? "Select the tasks you want to delete."
+        : tasks.size ? "" : "Add your first task.";
+      updateDeleteControls();
+    }
+
+    function appendTask(task) {
+      const row = document.createElement("li");
+      const button = document.createElement("button");
+      const label = document.createElement("span");
+
+      button.type = "button";
+      button.className = "task-button";
+      label.className = "label";
+      label.textContent = task.name;
+      button.append(label);
+      row.append(button);
+      list.append(row);
+      tasks.set(task.id, { task, button, row });
+      updateTaskButton(task, button);
+
+      let saving = false;
+
+      button.addEventListener("click", async () => {
+        if (deleting) return;
+
+        if (selecting) {
+          if (selected.has(task.id)) {
+            selected.delete(task.id);
+          } else {
+            selected.add(task.id);
+          }
+
+          updateTaskButton(task, button);
+          updateSelectionCount();
           return;
         }
 
-        list.style.paddingBottom = "";
-        list.replaceChildren(...data.map(taskRow));
-        taskStatus.textContent = data.length ? "" : "Add your first task.";
-
-        const first = list.children[data.findIndex(task => !task.done)];
-        if (first) {
-          const top = parseFloat(getComputedStyle(first).scrollMarginTop);
-          const remaining = list.getBoundingClientRect().bottom -
-            first.getBoundingClientRect().top;
-
-          list.style.paddingBottom = Math.max(0, innerHeight - top - remaining) + "px";
-          first.scrollIntoView({ block: "start" });
-        }
-      }
-
-      function showSignIn() {
-        todo.hidden = true;
-        list.replaceChildren();
-        input.value = "";
+        if (saving) return;
+        saving = true;
         taskStatus.textContent = "";
-        status.textContent = "";
-        signIn.hidden = false;
-        window.scrollTo(0, 0);
-      }
-
-      signIn.addEventListener("submit", async event => {
-        event.preventDefault();
-        const fields = new FormData(signIn);
-        signInButton.disabled = true;
-        status.textContent = "Signing in…";
-
-        try {
-          const { error } = await db.auth.signInWithPassword({
-            email: fields.get("email").trim(),
-            password: fields.get("password")
-          });
-
-          if (error) throw error;
-          signIn.reset();
-          await loadTasks();
-        } catch (error) {
-          status.textContent = error.message;
-        } finally {
-          signInButton.disabled = false;
-        }
-      });
-
-      form.addEventListener("submit", async event => {
-        event.preventDefault();
-        const name = input.value.trim();
-        if (!name || addButton.disabled) return;
-
-        addButton.disabled = true;
-        taskStatus.textContent = "Saving…";
+        const previousDone = task.done;
+        task.done = !previousDone;
+        updateTaskButton(task, button);
 
         try {
           const { data, error } = await db.from("tasks")
-            .insert({ name }).select("id, name, done").single();
+            .update({ done: task.done })
+            .eq("id", task.id)
+            .select("done")
+            .single();
 
           if (error) throw error;
-          list.append(taskRow(data));
-          if (input.value.trim() === name) input.value = "";
-          taskStatus.textContent = "";
+          task.done = data.done;
         } catch (error) {
+          task.done = previousDone;
           taskStatus.textContent = error.message;
         } finally {
-          addButton.disabled = false;
+          saving = false;
+          updateTaskButton(task, button);
         }
       });
+    }
 
-      signOut.addEventListener("click", async () => {
-        signOut.disabled = true;
+    async function loadTasks() {
+      signIn.hidden = true;
+      todo.hidden = true;
+      status.textContent = "Loading tasks…";
 
-        try {
-          const { error } = await db.auth.signOut({ scope: "local" });
-          if (error) throw error;
-          showSignIn();
-        } catch (error) {
-          taskStatus.textContent = error.message;
-        } finally {
-          signOut.disabled = false;
-        }
-      });
+      const { data, error } = await db.from("tasks")
+        .select("id, name, done")
+        .order("id");
 
-      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+      todo.hidden = false;
+      status.textContent = "";
 
-      async function initialize() {
-        try {
-          const { data, error } = await db.auth.getSession();
-          if (error) throw error;
-
-          if (data.session) {
-            await loadTasks();
-          } else {
-            showSignIn();
-          }
-        } catch (error) {
-          showSignIn();
-          status.textContent = error.message;
-        }
+      if (error) {
+        taskStatus.textContent = error.message;
+        return;
       }
 
-      initialize();
+      tasks.clear();
+      list.replaceChildren();
+      list.style.paddingBottom = "";
+      data.forEach(appendTask);
+      setDeleteMode(false);
+
+      const unfinished = data.find(task => !task.done);
+      if (unfinished) {
+        const { row } = tasks.get(unfinished.id);
+        const top = parseFloat(getComputedStyle(row).scrollMarginTop);
+        const remaining = list.getBoundingClientRect().bottom -
+          row.getBoundingClientRect().top;
+
+        list.style.paddingBottom = Math.max(0, innerHeight - top - remaining) + "px";
+        row.scrollIntoView({ block: "start" });
+      }
     }
+
+    function showSignIn() {
+      todo.hidden = true;
+      tasks.clear();
+      list.replaceChildren();
+      input.value = "";
+      setDeleteMode(false);
+      status.textContent = "";
+      signIn.hidden = false;
+      window.scrollTo(0, 0);
+    }
+
+    signIn.addEventListener("submit", async event => {
+      event.preventDefault();
+      const fields = new FormData(signIn);
+      signInButton.disabled = true;
+      status.textContent = "Signing in…";
+
+      try {
+        const { error } = await db.auth.signInWithPassword({
+          email: fields.get("email").trim(),
+          password: fields.get("password")
+        });
+
+        if (error) throw error;
+        signIn.reset();
+        await loadTasks();
+      } catch (error) {
+        status.textContent = error.message;
+      } finally {
+        signInButton.disabled = false;
+      }
+    });
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      const name = input.value.trim();
+      if (!name || addButton.disabled || selecting) return;
+
+      addButton.disabled = true;
+      taskStatus.textContent = "Saving…";
+
+      try {
+        const { data, error } = await db.from("tasks")
+          .insert({ name })
+          .select("id, name, done")
+          .single();
+
+        if (error) throw error;
+        appendTask(data);
+        if (input.value.trim() === name) input.value = "";
+        if (!selecting) taskStatus.textContent = "";
+        updateDeleteControls();
+      } catch (error) {
+        taskStatus.textContent = error.message;
+      } finally {
+        addButton.disabled = false;
+      }
+    });
+
+    deleteMode.addEventListener("click", () => {
+      setDeleteMode(true);
+      cancelDelete.focus();
+    });
+
+    cancelDelete.addEventListener("click", () => {
+      setDeleteMode(false);
+      optionsToggle.focus();
+    });
+
+    deleteSelected.addEventListener("click", async () => {
+      if (!selecting || deleting || selected.size === 0) return;
+
+      const ids = [...selected];
+      const description = ids.length === 1
+        ? "this task"
+        : "these " + ids.length + " tasks";
+
+      if (!window.confirm("Permanently delete " + description + "?")) return;
+
+      deleting = true;
+      updateDeleteControls();
+      taskStatus.textContent = "Deleting…";
+
+      try {
+        const { data, error } = await db.from("tasks")
+          .delete()
+          .in("id", ids)
+          .select("id");
+
+        if (error) throw error;
+
+        for (const { id } of data) {
+          tasks.get(id)?.row.remove();
+          tasks.delete(id);
+          selected.delete(id);
+        }
+
+        if (selected.size) {
+          taskStatus.textContent = "Some tasks could not be deleted. Refresh and try again.";
+        } else {
+          setDeleteMode(false);
+          optionsToggle.focus();
+        }
+      } catch (error) {
+        taskStatus.textContent = error.message;
+      } finally {
+        deleting = false;
+        updateDeleteControls();
+      }
+    });
+
+    signOut.addEventListener("click", async () => {
+      signOut.disabled = true;
+
+      try {
+        const { error } = await db.auth.signOut({ scope: "local" });
+        if (error) throw error;
+        showSignIn();
+      } catch (error) {
+        taskStatus.textContent = error.message;
+      } finally {
+        signOut.disabled = false;
+      }
+    });
+
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+    async function initialize() {
+      try {
+        const { data, error } = await db.auth.getSession();
+        if (error) throw error;
+
+        if (data.session) {
+          await loadTasks();
+        } else {
+          showSignIn();
+        }
+      } catch (error) {
+        showSignIn();
+        status.textContent = error.message;
+      }
+    }
+
+    initialize();
   </script>
 </body>
 </html>
