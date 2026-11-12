@@ -8,6 +8,9 @@
     :root {
       color-scheme: light;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --rise-duration: .9s;
+      --rise-stagger: 25ms;
+      --row-stagger: 90ms;
     }
 
     [hidden] { display: none !important; }
@@ -85,6 +88,38 @@
       background-size: 100% var(--strike-thickness);
     }
 
+    /* Letter rise, carried over from the portfolio footer */
+    .word {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      padding: .1em 0 .15em;
+      margin: -.1em 0 -.15em;
+      max-width: 100%;
+    }
+
+    .char {
+      display: inline-block;
+      transform: translateY(110%);
+      animation:
+        rise var(--rise-duration)
+        cubic-bezier(.2, .7, .1, 1)
+        forwards paused;
+      animation-delay: calc(
+        var(--row, 0) * var(--row-stagger) +
+        var(--i) * var(--rise-stagger) + 150ms
+      );
+    }
+
+    li.is-in-view .char { animation-play-state: running; }
+
+    /* Goal labels rebuilt after their row has risen appear without replaying. */
+    .task-goal.is-settled .char { animation: none; transform: none; }
+
+    @keyframes rise {
+      to { transform: translateY(0); }
+    }
+
     #sign-in { max-width: 22rem; }
     #sign-in label { display: block; margin-bottom: 1rem; }
 
@@ -128,7 +163,13 @@
       font-weight: 700;
     }
 
-    #task-name::placeholder { color: var(--placeholder-color); opacity: 1; }
+    #task-name::placeholder {
+      color: var(--placeholder-color);
+      opacity: 0;
+      transition: opacity .9s ease;
+    }
+
+    #task-name.is-ready::placeholder { opacity: 1; }
 
     #options { position: relative; }
 
@@ -175,6 +216,27 @@
 
     @media (prefers-reduced-motion: reduce) {
       .label { transition: none; }
+      .char { animation: none; transform: none; }
+      #task-name::placeholder { transition: none; }
+    }
+    .task-with-goal {
+      display: flex;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      column-gap: clamp(.5rem, 2vw, 1.5rem);
+    }
+
+    .task-with-goal .task-button { justify-self: start; max-width: 100%; }
+
+    .task-goal {
+      color: var(--task-color);
+      font-size: clamp(2rem, 1.5vw, 6rem);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .task-button[data-done="true"] + .task-goal {
+      color: var(--completed-color);
     }
   </style>
 </head>
@@ -259,6 +321,84 @@
     let selecting = false;
     let deleting = false;
 
+    // Caps keep long tasks and long lists from waiting too long to appear.
+    const MAX_CHAR_STEP = 24;
+    const MAX_ROW_STEP = 10;
+    const GOAL_PAUSE = 2;      // brief beat between the name and its goal
+    const MAX_GOAL_STEP = 12;  // goal letters past the name's last step
+    let placeholderShown = false;
+
+    // Fade the placeholder in once the first batch of tasks has risen.
+    function revealPlaceholder(rows = []) {
+      if (placeholderShown) return;
+      placeholderShown = true;
+
+      requestAnimationFrame(async () => {
+        const animations = rows
+          .flatMap(row => row.getAnimations({ subtree: true }))
+          .filter(animation => animation.animationName === "rise");
+        await Promise.allSettled(animations.map(animation => animation.finished));
+        input.classList.add("is-ready");
+      });
+    }
+
+    function resetPlaceholder() {
+      placeholderShown = false;
+      input.classList.remove("is-ready");
+    }
+
+    // Rows rise as they scroll into view, staggered top to bottom.
+    const riseObserver = new IntersectionObserver(entries => {
+      const rows = entries
+        .filter(entry => entry.isIntersecting)
+        .map(entry => entry.target)
+        .sort((a, b) =>
+          a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
+        );
+
+      rows.forEach((row, index) => {
+        row.style.setProperty("--row", Math.min(index, MAX_ROW_STEP));
+        row.classList.add("is-in-view");
+        riseObserver.unobserve(row);
+      });
+
+      if (rows.length) revealPlaceholder(rows);
+    }, { threshold: 0.3 });
+
+    // Split text into words and letters for the rise animation.
+    // Returns the step the last letter landed on.
+    function buildChars(container, text, start = 0, cap = MAX_CHAR_STEP) {
+      container.replaceChildren();
+      let i = start;
+      let last = start;
+
+      text.split(" ").forEach((word, wordIndex) => {
+        if (wordIndex > 0) container.append(" ");
+
+        const wordSpan = document.createElement("span");
+        wordSpan.className = "word";
+
+        [...word].forEach(letter => {
+          const char = document.createElement("span");
+          char.className = "char";
+          char.textContent = letter;
+          last = Math.min(i++, cap);
+          char.style.setProperty("--i", last);
+          wordSpan.append(char);
+        });
+
+        container.append(wordSpan);
+      });
+
+      return last;
+    }
+
+    // Goal text is split into letters, so screen readers get the full label.
+    function setGoalText(goal, text, start = 0) {
+      goal.setAttribute("aria-label", text);
+      buildChars(goal, text, start, start + MAX_GOAL_STEP);
+    }
+
     function setIncognito(enabled) {
       todo.classList.toggle("incognito", enabled);
       incognito.setAttribute("aria-pressed", String(enabled));
@@ -336,6 +476,49 @@
       updateDeleteControls();
     }
 
+    const millisecondsPerDay = 86400000;
+
+    function localCalendarDay(now = new Date()) {
+      return Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    }
+
+    function parseTask(text, today = localCalendarDay()) {
+      const suffix = /\/\s*(\d+)[^/]*$/.exec(text);
+      if (!suffix) return { name: text };
+
+      const name = text.slice(0, suffix.index).trim();
+      if (!name) throw new Error("Enter a task name before the slash.");
+
+      const goal = new Date(today + Number(suffix[1]) * millisecondsPerDay);
+      if (!Number.isFinite(goal.getTime()) || goal.getUTCFullYear() > 9999) {
+        throw new Error("Enter a smaller number of days.");
+      }
+
+      return { name, goal_completion_date: goal.toISOString().slice(0, 10) };
+    }
+
+    function goalLabel(date, today = localCalendarDay()) {
+      const days = (Date.parse(date + "T00:00:00Z") - today) / millisecondsPerDay;
+      if (days === 0) return "Due today";
+      const count = Math.abs(days);
+      const duration = count + (count === 1 ? " day" : " days");
+      return days > 0 ? "In " + duration : duration + " overdue";
+    }
+
+    // Only rebuild a goal when its wording changes; show the new text in place.
+    function refreshGoalLabels() {
+      const today = localCalendarDay();
+      for (const goal of list.querySelectorAll(".task-goal")) {
+        const text = goalLabel(goal.dateTime, today);
+        if (goal.getAttribute("aria-label") === text) continue;
+        goal.classList.add("is-settled");
+        setGoalText(goal, text);
+      }
+    }
+
+    window.addEventListener("focus", refreshGoalLabels);
+    window.setInterval(refreshGoalLabels, 60000);
+
     function appendTask(task) {
       const row = document.createElement("li");
       const button = document.createElement("button");
@@ -343,13 +526,29 @@
 
       button.type = "button";
       button.className = "task-button";
+      button.setAttribute("aria-label", task.name);
       label.className = "label";
-      label.textContent = task.name;
+      label.setAttribute("aria-hidden", "true");
+      const lastStep = buildChars(label, task.name);
       button.append(label);
       row.append(button);
+
+      if (task.goal_completion_date) {
+        const goal = document.createElement("time");
+        goal.className = "task-goal";
+        goal.dateTime = task.goal_completion_date;
+        // Goal letters pick up right after the name's last letter.
+        setGoalText(goal, goalLabel(goal.dateTime), lastStep + GOAL_PAUSE);
+        goal.id = "goal-" + task.id;
+        button.setAttribute("aria-describedby", goal.id);
+        row.classList.add("task-with-goal");
+        row.append(goal);
+      }
+
       list.append(row);
       tasks.set(task.id, { task, button, row });
       updateTaskButton(task, button);
+      riseObserver.observe(row);
 
       let saving = false;
 
@@ -400,7 +599,7 @@
       status.textContent = "Loading tasks…";
 
       const { data, error } = await db.from("tasks")
-        .select("id, name, done")
+        .select("id, name, done, goal_completion_date")
         .order("id");
 
       todo.hidden = false;
@@ -408,14 +607,19 @@
 
       if (error) {
         taskStatus.textContent = error.message;
+        revealPlaceholder();
         return;
       }
 
+      riseObserver.disconnect();
+      resetPlaceholder();
       tasks.clear();
       list.replaceChildren();
       list.style.paddingBottom = "";
       data.forEach(appendTask);
       setDeleteMode(false);
+
+      if (!data.length) revealPlaceholder();
 
       const unfinished = data.find(task => !task.done);
       if (unfinished) {
@@ -431,6 +635,8 @@
 
     function showSignIn() {
       todo.hidden = true;
+      riseObserver.disconnect();
+      resetPlaceholder();
       tasks.clear();
       list.replaceChildren();
       input.value = "";
@@ -464,21 +670,21 @@
 
     form.addEventListener("submit", async event => {
       event.preventDefault();
-      const name = input.value.trim();
-      if (!name || addButton.disabled || selecting) return;
+      const entry = input.value.trim();
+      if (!entry || addButton.disabled || selecting) return;
 
       addButton.disabled = true;
       taskStatus.textContent = "Saving…";
 
       try {
         const { data, error } = await db.from("tasks")
-          .insert({ name })
-          .select("id, name, done")
+          .insert(parseTask(entry))
+          .select("id, name, done, goal_completion_date")
           .single();
 
         if (error) throw error;
         appendTask(data);
-        if (input.value.trim() === name) input.value = "";
+        if (input.value.trim() === entry) input.value = "";
         if (!selecting) taskStatus.textContent = "";
         updateDeleteControls();
       } catch (error) {
@@ -521,7 +727,11 @@
         if (error) throw error;
 
         for (const { id } of data) {
-          tasks.get(id)?.row.remove();
+          const entry = tasks.get(id);
+          if (entry) {
+            riseObserver.unobserve(entry.row);
+            entry.row.remove();
+          }
           tasks.delete(id);
           selected.delete(id);
         }
