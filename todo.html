@@ -236,7 +236,7 @@
     }
 
     .task-button[data-done="true"] + .task-goal {
-      color: var(--completed-color);
+      display: none;
     }
   </style>
 </head>
@@ -439,6 +439,11 @@
 
     function updateTaskButton(task, button) {
       button.dataset.done = String(task.done);
+      const goal = button.nextElementSibling;
+      if (goal?.classList.contains("task-goal")) {
+        if (task.done) button.removeAttribute("aria-describedby");
+        else button.setAttribute("aria-describedby", goal.id);
+      }
       button.setAttribute("aria-pressed", String(
         selecting ? selected.has(task.id) : task.done
       ));
